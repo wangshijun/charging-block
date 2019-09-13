@@ -51,7 +51,8 @@ keystone.init({
 keystone.initExpressSession(keystone.mongoose);
 keystone.import('models');
 keystone.set('nav', {
-  应用: ['users'],
+  平台: ['charging-poles', 'transactions', 'users'],
+  元数据: ['locations', 'manufacturers', 'suppliers'],
   系统: ['admins'],
 });
 keystone.initDatabaseConfig();

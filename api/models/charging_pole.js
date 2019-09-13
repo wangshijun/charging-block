@@ -5,24 +5,59 @@ const ChargingPole = new keystone.List('ChargingPole', {
   label: '充电桩',
   plural: '充电桩',
   track: true,
-  noedit: true,
-  nodelete: true,
-  map: { name: 'did' },
-  searchFields: 'did name email',
+  searchFields: 'name owner',
   defaultSort: '-createdAt',
   schema: { collection: 'charging_poles' },
 });
 
 ChargingPole.add({
-  did: {
+  name: {
     type: types.Text,
-    label: '用户ID',
+    label: '名字',
     required: true,
     initial: true,
   },
-  name: { type: types.Text, label: '用户名', required: false },
-  email: { type: types.Text, label: '邮箱', required: false },
+  description: {
+    type: types.Text,
+    label: '描述',
+    required: true,
+    initial: true,
+  },
+  address: { type: types.Number, label: '用户名', required: false },
+  latitude: { type: types.Number, label: '用户名', required: false },
+  longitude: { type: types.Number, label: '用户名', required: false },
+  power: { type: types.Number, label: '单价（度）', required: false },
+  price: { type: types.Number, label: '功率（A）', required: false },
+  supportedCarModels: { type: types.TextArray, label: '兼容的车型', required: false },
+  connectedCars: { type: types.TextArray, label: '绑定的车' },
+
+  operator: {
+    type: types.Relationship,
+    ref: 'User',
+    size: 'small',
+    label: '桩主',
+    index: true,
+  },
+  manufacturer: {
+    type: types.Relationship,
+    ref: 'Manufacturer',
+    label: '制造商',
+    index: true,
+  },
+  location: {
+    type: types.Relationship,
+    ref: 'Location',
+    label: '场地',
+    index: true,
+  },
+  supplier: {
+    type: types.Relationship,
+    ref: 'Supplier',
+    label: '电网',
+    index: true,
+  },
 });
 
-ChargingPole.defaultColumns = 'did, name, email, createdAt, updatedAt';
+ChargingPole.defaultColumns =
+  'name, latitude, longitude, address, owner, manufacturer, location, supplier, createdAt, updatedAt';
 ChargingPole.register();
