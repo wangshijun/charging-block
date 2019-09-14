@@ -123,9 +123,13 @@ module.exports = {
     });
     console.log('claim.hash', { userDid, userAddress, hash, cpid });
 
-    await sleep(3000);
-    const res = await ForgeSDK.getTx({ hash });
-    console.log('claim.tx', res);
+    try {
+      await sleep(3000);
+      const res = await ForgeSDK.getTx({ hash });
+      console.log('claim.tx', res);
+    } catch (err) {
+      console.error(err.errors);
+    }
     pole.operator = userAddress;
     pole.claimTx = hash;
     await pole.save();
