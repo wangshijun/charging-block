@@ -24,7 +24,6 @@ export default function Layout({ title, children, contentOnly }) {
         </Container>
       </AppBar>
       <Container style={{ minHeight: '60vh' }}>{children}</Container>
-      <Footer />
     </Div>
   );
 }
