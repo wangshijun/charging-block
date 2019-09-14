@@ -73,7 +73,7 @@ export default function ChargingPoleInit() {
     return null;
   }
 
-  const fields = {
+  const groups = {
     'Basic Info': {
       name: { type: 'text', label: '名字', required: true },
       description: { type: 'text', label: '描述', required: true },
@@ -100,27 +100,27 @@ export default function ChargingPoleInit() {
           </Typography>
 
           <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-            {Object.keys(fields).map(x => (
-              <React.Fragment key={x}>
+            {Object.keys(groups).map(g => (
+              <React.Fragment key={g}>
                 <Typography component="h4" variant="h5" className="form-subheader">
-                  {x}
+                  {g}
                 </Typography>
-                {fields[x].map(field => (
+                {Object.keys(groups[g]).map(name => (
                   <TextField
-                    label={field.name}
-                    className={`"input input-${field.name}"`}
+                    label={name}
+                    className={`"input input-${name}"`}
                     margin="normal"
                     variant="outlined"
                     fullWidth
-                    error={errors[field.name] && errors[field.name].message}
-                    helperText={errors[field.name] ? errors[field.name].message : ''}
-                    inputRef={register(field.required ? { required: 'Name is required' } : {})}
+                    error={errors[name] && errors[name].message}
+                    helperText={errors[name] ? errors[name].message : ''}
+                    inputRef={register(groups[g][name].required ? { required: `${name} is required` } : {})}
                     InputProps={{
+                      name,
                       disabled: loading,
-                      defaultValue: defaults[field.name],
-                      type: field.type,
-                      name: field.name,
-                      placeholder: '',
+                      defaultValue: defaults[name],
+                      type: groups[g][name].type,
+                      placeholder: groups[g][name].placeholder || '',
                     }}
                   />
                 ))}
