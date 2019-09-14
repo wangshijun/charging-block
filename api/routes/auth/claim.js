@@ -3,6 +3,7 @@
 const multibase = require('multibase');
 const keystone = require('keystone');
 const ForgeSDK = require('@arcblock/forge-sdk');
+const { fromTokenToUnit } = require('@arcblock/forge-util');
 
 const auth = require('../../libs/auth');
 
@@ -133,6 +134,18 @@ module.exports = {
     pole.operator = userAddress;
     pole.claimTx = hash;
     await pole.save();
+
+    // 奖励
+    const hash2 = await ForgeSDK.sendTransferTx({
+      tx: {
+        itx: {
+          to: userAddress,
+          value: fromTokenToUnit(100, 18),
+        },
+      },
+      wallet,
+    });
+    console.log('connect.onAuth.fund', hash2);
 
     return { hash, tx: claim.origin };
   },
