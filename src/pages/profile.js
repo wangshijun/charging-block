@@ -86,7 +86,7 @@ export default function ProfilePage() {
             </Button>
             {balance.value && (
               <Button color="primary" variant="contained" onClick={() => setOpen()} style={{ marginTop: '30px' }}>
-                Get 25 {token.symbol}
+                Get 10000 {token.symbol}
               </Button>
             )}
           </Grid>
@@ -126,16 +126,16 @@ export default function ProfilePage() {
       {isOpen && (
         <Auth
           responsive
-          action="checkin"
+          action="faucet"
           checkFn={api.get}
           onError={onAuthError}
           onClose={() => setOpen()}
           onSuccess={() => window.location.reload()}
           messages={{
-            title: `Get 25 ${token.symbol} for FREE`,
-            scan: `Scan qrcode to get 25 ${token.symbol} for FREE`,
+            title: `Get 10000 ${token.symbol} for FREE`,
+            scan: `Scan qrcode to get 10000 ${token.symbol} for FREE`,
             confirm: 'Confirm on your ABT Wallet',
-            success: `25 ${token.symbol} sent to your account`,
+            success: `10000 ${token.symbol} sent to your account`,
           }}
         />
       )}
@@ -144,7 +144,7 @@ export default function ProfilePage() {
 }
 
 const Main = styled.main`
-  margin: 80px 0;
+  padding: 120px 0;
   display: flex;
 
   .avatar {

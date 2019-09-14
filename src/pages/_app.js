@@ -9,7 +9,6 @@ import theme from '../libs/theme';
 
 const GlobalStyle = createGlobalStyle`
   a {
-    color: ${props => props.theme.colors.green};
     text-decoration: none;
   }
 `;

@@ -45,7 +45,6 @@ export default function Header() {
     <Nav>
       <div className="nav-left">
         <Typography href="/" component="a" variant="h6" color="inherit" noWrap className="brand">
-          <img className="logo" src="/static/images/logo.png" alt="arcblock" />
           {env.appName}
         </Typography>
         <Typography
@@ -96,8 +95,8 @@ export default function Header() {
           onSuccess={onLogin}
           messages={{
             title: 'login',
-            scan: 'Scan QR code with ABT Wallet',
-            confirm: 'Confirm login on your ABT Wallet',
+            scan: 'Scan QR code with Wallet',
+            confirm: 'Confirm login on your Wallet',
             success: 'You have successfully signed in!',
           }}
         />
@@ -110,6 +109,7 @@ const Nav = styled(Toolbar)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 80px;
 
   && {
     padding-left: 0;
