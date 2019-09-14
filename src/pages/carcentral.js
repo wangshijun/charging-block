@@ -68,6 +68,7 @@ export default function CarPage() {
   const [batteryClass, setBatteryClass] = useState('battery charging-start');
   const [batteryLevel, setBatteryLevel] = useState(0);
   const [open, setOpen] = useState(false);
+  const [poleDid, setPoleDid] = useState('');
 
   console.log(storage);
 
@@ -133,7 +134,10 @@ export default function CarPage() {
     setBinding(false);
   };
 
-  const changePageCallBack = (page, batteryLevelTemp) => {
+  const changePageCallBack = (page, batteryLevelTemp, poleDidTemp) => {
+    if (poleDidTemp) {
+      setPoleDid(poleDidTemp);
+    }
     setCountPage(page);
     setBatteryLevel(batteryLevelTemp);
     if (batteryLevelTemp === 0) {
@@ -179,6 +183,8 @@ export default function CarPage() {
             {countPage === 0 && <ChargingMap changePageCallBack={changePageCallBack} />}
             {countPage === 1 && (
               <ConnectToCharging
+                poleDid={poleDid}
+                carDid={storage.wallet.address}
                 changePageCallBack={changePageCallBack}
                 goFirstPage={() => {
                   setCountPage(0);
