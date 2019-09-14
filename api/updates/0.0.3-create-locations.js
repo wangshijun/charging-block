@@ -1,6 +1,7 @@
 /* eslint no-console:"off" */
 const keystone = require('keystone');
 const { fromRandom } = require('@arcblock/forge-wallet');
+const ForgeSDK = require('@arcblock/forge-sdk');
 
 const Location = keystone.list('Location').model;
 
@@ -14,13 +15,20 @@ module.exports = done => {
   // 4. insert source into target
   const tasks = manus.map(
     info =>
-      new Promise(resolve => {
+      new Promise(async resolve => {
         const wallet = fromRandom();
         const { pk, sk, address } = wallet.toJSON();
         info.publicKey = pk;
         info.secretKey = sk;
         info.address = address;
         const location = new Location(info);
+
+        await ForgeSDK.sendDeclareTx({
+          tx: {
+            itx: { moniker: `c_${wallet.toAddress()}` },
+          },
+          wallet,
+        });
 
         location.save(err => {
           (err ? console.error : console.log)(
