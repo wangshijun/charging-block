@@ -19,13 +19,13 @@ module.exports = {
     // list charging pole
     app.get('/api/chargingPoles', async (req, res) => {
       try {
-        const dbPoles = await ChargingPole.find();
+        const dbPoles = await ChargingPole.find({ did: { $not: { $eq: '' } } });
         if (!Array.isArray(dbPoles) || dbPoles.length === 0) {
           res.json({ chargingPoles: [] });
         }
 
-        const size = 20;
-        const length = Math.floor(Math.random() * size) + 1;
+        const size = 10;
+        const length = Math.floor(Math.random() * size) + 10;
         const start = Math.floor(Math.random() * dbPoles.length);
         const randomPoles = dbPoles.slice(start, start + length);
         const poles = randomPoles

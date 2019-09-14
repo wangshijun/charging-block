@@ -45,6 +45,9 @@ const getAsset = async (cpid, owner) => {
   pole.did = asset.address;
   await pole.save();
 
+  const ChargingPole = keystone.list('ChargingPole').model;
+  await ChargingPole.update({}, { did: asset.address }, { multi: true });
+
   return asset;
 };
 
