@@ -115,10 +115,6 @@ export default function ChargingPoleInit() {
     <Layout title="Initialize">
       <Main>
         <div className="form">
-          <Typography component="h3" variant="h4" className="form-header">
-            Initialize
-          </Typography>
-
           <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
             {Object.keys(groups).map(g => (
               <React.Fragment key={g}>
@@ -163,7 +159,7 @@ export default function ChargingPoleInit() {
                           label={capitalize(name)}
                           value={getValues()[name] || defaults[name] || ''}
                           onChange={e => setValue(name, e.target.value)}
-                          className={`input select-${name}`}
+                          className={`select select-${name}`}
                           error={errors[name] && errors[name].message}>
                           {options.map(x => (
                             <MenuItem key={x._id} value={x._id}>
@@ -225,7 +221,7 @@ const Main = styled.div`
   }
 
   .form-subheader {
-    margin-top: 40px;
+    margin-bottom: 16px;
   }
 
   .form-subgroup {
@@ -233,15 +229,21 @@ const Main = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    margin-bottom: 32px;
 
     .input {
       width: 36%;
       margin-right: 4%;
     }
+
+    .select {
+      width: 100%;
+      margin-bottom: 32px;
+    }
   }
 
   .submit {
     margin-top: 40px;
-    width: 400px;
+    width: 380px;
   }
 `;

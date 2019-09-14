@@ -18,7 +18,7 @@ import Slide from '@material-ui/core/Slide';
 import Button from '@arcblock/ux/lib/Button';
 import Auth from '@arcblock/did-react/lib/Auth';
 
-import Layout from '../components/layout';
+import Layout from '../components/car';
 import ChargingMap from '../components/carcentral/chargingmap';
 import ConnectToCharging from '../components/carcentral/connecttocharging';
 import Charging from '../components/carcentral/charging';
@@ -33,7 +33,6 @@ import {
   getChargingAmount,
   setChargingAmount,
   getChargingPole,
-  getChargingId,
   setChargingId,
 } from '../libs/storage';
 
@@ -260,17 +259,16 @@ const charging = keyframes`
 `;
 
 const Main = styled.main`
-  margin: 0px 0;
-  width: 1280px;
-  height: 800px;
-  display: flex;
+  box-shadow: inset 0 0 100px hsla(0, 0%, 0%, 0.3);
+  height: 100%;
+  padding: 10px;
+  margin: 0;
+
   .container {
     width: 100%;
     flex-wrap: nowrap;
-    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
   }
   .left-container {
-    background: #ececec;
     .car-status-container {
       height: 120px;
       display: flex;
