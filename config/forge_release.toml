@@ -1,0 +1,89 @@
+[app]
+name = "charging_block"
+version = ""
+path = ""
+executable = ""
+sock_tcp = ""
+
+[forge]
+proto_version = 1
+path = "/Users/weipang/.forge_chains/forge_charging_block/forge_release/core"
+logpath = "logs"
+sock_grpc = "tcp://127.0.0.1:28222"
+pub_sub_key = "CBTTOTHEMOON"
+
+[forge.stake.timeout]
+general = 10
+stake_for_node = 60
+
+  [forge.web]
+  enabled = true
+  port = 8_222
+
+  [forge.token]
+  name = "ChargingBlock"
+  symbol = "CBT"
+  unit = "arc"
+  description = "Charging token CBT"
+  icon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAAHdbkFIAAAAAXNSR0IArs4c6QAAD2ZJREFUeAHFW3uMXkUVn7m7y/Zd2i0tLS197C5tVaqACD5q7BZtgBAVg0osxkSoJhoiATXGR1s0/qOJJEYNCEYFI9rEB0QMj25VJCZUKaW2QPfRF7T0tX2/2O43/n5z77nf3Pnm3u9+u2s4yX5z78yZM+ecOXPmzLmzSjlgDl8/yfQse9OpUlpeKj3LjH3eckKpyyfax6hzg7YItvE/x2LcqyYr5TxHZscNFwsVW544n3mN1NCZHYpkCaS3/ZRSY5rsq3rlpIp0x4axMqYiF3PGKHV2KEZYNEFF8ZPzezppTKpqpQBZhZ4ESpHgxQV08C/T0/V7t7IqJmtfPxu3XQI+AFYPprdrvzFmeip7hD4VcAt9aN0yI8o0Xj4pbmR3KMuYwf1ZKbYcZ1MGsghsoqodwIhNy9LKiy7IzgPEjHTnM38DWwct0liomJokg0p9ioSsmA5FBal2gfFL3Tr3WWt9p+7o/rHUpQRSe2GLmINgLRyv1KuYZEIiAwgNgVCzJZB29ju2QAfnK8oaQdy9+psQasbUvWCI8VoyS4JCBBJMEKU65W7/OaVmtFpretE2JiZon6WTlCR0HIbscsgZBxSLQIyZ0Po+jzvWJ8RTJUKUcxAFEwmQkaiDQejABekYqU/o9g1/SAkIjjGrWkxvT2ZpSxtLfw3UEBBkrI1v4PkumPQZSPp13bH+UWlzyxoC6ZS6WM5zLgfQwRroYHWKO4Sp7TmNV5QdMKTYZGyz7pjWqvU6K6blwPR9+N2mcn6jbT2M+p3gWoBeTNzOpWOV4oIBCCd2uaWde2CubmdiXuCsyN0gTByAiBqB9a22hj80FhfEkNw6D0cLpXTuBXn+OKV2QAezYEh78w2pWfBryhODcVUbZJ7ZGvuiHRDhaFKfdHAEdEiQ9UMJIv0ULZO273Vmj1oCU1qUonsmEdHBOzATYt7OOHysFeEIRuYfoRPzT3gZ7jwAWunnIx1FK22bjOYiTgL9K8AJjcqFBFd3dl8T6fb1v0nbLoayfNiU7HxSDyfiQroW0uk8Bfm5A4XgMog0MZZaLDElQPyUiHTugx2Q+3aYcLwd2xbpzJfMLLABiumzWPxphzF14C/pjOI7bmeiZDhgRQiMub5V9Z17FvvF1aH2UB0Hw/b+3VCbW5fLgOlfvsQMVTa7yMN9BjNHwcyUUP8aBkxf12pTMWtCyNZT0N2EgJMh7vtCTHR7YsMebuEU1BgBO9P9eB4kQ3M89jPGPHRVBwPM0epofQ7ATjZhDVzJKqsBc+CWCebYoSRYSzBJjESLIAm2FJnIWepp97mw5GmxM2YdBj6pOzdMtAzUSN4LqY95vjWllDxwNTPeaIXu6TIDwZXfRU2Fn6KbTUBH6id06GukwpbnsfCKBudcc3BKfBJMzoNk272FT6boMSbHiz6lPwAfx/gxAVNRX4qUNndKhS0pfR7Qr78TcaarbkauzoZpu14KjXDvCwnCTcaBSBl9xHnPf3wXBuaesMmJY5vwTtdP9ydA7TBQ+2/WpKTZL6EB9eVM5WVxFJ+p4xxziziJgazVJK00Pno7wmTMr0zNGVmPcVPm11uelpzpXVYxxiFNCRg+1gMOyJDj7djwDgLfD1H9/hSE05iAblKLaFIKXsqW0qBmA5FRdRFID8Y93LLqDc4l6w6uorv1gg2vugrl+WAz/P2SzLg0sjcC2uA2T5t4ybGJTMfkZTok5sHEAT1+wkV61uOHWJVhQHBq/II0MDzaF2BG2qWcgRUwG8vTA3jAR+ABb3OrgwwIguld/itjKp+V9+GWeoyered0vx7qX8iA3wFT9C0cMFfDlXgepoqJ09dWpZs+p9uf/ne1Nv+pIQZIxvRdd6MyQ7fAfyyFE5uFqjOIWnYpHT2uWs39eZLmsVCKAUh+B4zzgTwifj3mul+Nablaz3lywG/z3wsZgA18DDbwR79T2XdMxzHV3taGs4zjKrO9cxmAc9oB5zQviz68N92kV+gF3U+FetcwAFVr1dc1lPGMfk+J3pm+Abpqxd8ULL02uOMcAMZD2P9v95trGMj1AW/Cv8tJz6fSAjKD1W1WvQ1Oaqy4yipyiIkMA1D7aUhe60FehLfzjxdClzsid0p3i2YbveQVqPfAn46UTVj6+prBOSgJ5w1O4hw8BAw82JcBjgNmyDxpzC3YRmOwDGBtT8bcd0mlLdmPkhcBdzdCdoy4Tn43g4bf3nf4sDTHGqhU+qUiLV8A9/WAuxsPsnKczMP3aEHYyWbPiqlEjzWgjH1J+++qEw0TkarnLtkGr5x3VkgJ4mEPNjIXzg5u5CuD0h+59fb5EELyImB0S+PjVs1zX9G5QegcyO6iSMosYFOEh68Iji331xmcSAyt69lHhmjy4mnK7Om6JLYBF/m1Oupn9pVzzpXBdJoPUIiND70gxKLt9qbhnP5C7rbq07Xv44F+AUbYkoTW0zAVWLtpMkQ6kTlOkT/vzpnAoprKTY0xsAhxohtucwWcg4dk/O/6CgarZaZIq7nlGWCQyjMABxRgNnPAeWc9vR9Xh8uQ4NeWAYddixQn7CaAVz9dNA4OjatAgHl9vkqeX+rzSqP3ltMAQ+8zkJ4pJ9/u5FjOOWeWyd8T8gZnvTbP1jJAQr76eAg9yj8YnzsFnGtJ6dEx9WfPfTVj04Bd0E3rImjwObdO8RzvA4/hPCm5gwsOVwETUbSHei55bvVozu66/Zm/RKq55TahZUvmGssAj+AEljwXvlTiMMrMoQeRnvfUDq+u5iRT086K6YiAOC08IW0rMTjT1Q4gXlzFVysGotg7nDYQhzElAmbq3ZdpwGEyivZRdBpmH66UJFcuJPDl5ud8jhno7H5QGtKSFl8EwqB8FirCvRIG6oDW0cflVcgoPXkadOkBrbwIGGzUA48GlLETH0H+JN0y6wKR0QdMZehZaUzLrZjjs57HGwPe/bq0Ax5onLQPBzC48VMBGQaIi9jwe4hYvun0ix85Po/ivo/wERmM0nH5eSPgYd6x7DXWbRVqGGBTriak3ykY3gD+7LkAldQGgxS66wBA8jOQPOsEErwgA2wLJi8DxOtVQeJuSL48Dy+XAemAkO12RE12yUhdmRJLe0BF0QJ4u8Loti4DMpjZ+ZH56vzgw/C875e6UImB70MW5K5QW6iuNAOhznl1pn/ZQlWJPoNoaQW256tg1OlBJK9PXj2mcDt2zaeVaf6t7nj6uTy84daPWAFm703j1KnTX4TV3g1TmTVcRhrpB6ZPIiHzM8SdP9QdTx1opK+POywFQOhp6vQp5M/MDT7Bt+IdZr9JNZlbNdKejY7fkAJM37KbVUX/GjNdJ4nbKBujg4/lMoQld49u776vLMW6CsAsa9W7nEKvLEs0xWOMaAPZwTho8TbTFC/0QM64rzDUY9Aj4V8IN1BH94/s3PVy0yCAYqsKFYCLFJ+ERh+F5y3ES4nz2ss+HKwPIXhuRFgSmARBOxAyHsfRI++LEbmwtwFw9vGj+5SJ7APuE91VZBFBwXhiV2fV86WdWtlvK1neqm9zIDjja0KZL5UxZhw2z0ZYzHC3ANB8FHHvtSEfUdMTX6tX4mv1wwX04ibGZAyFeVgcLjAWXoy4jaGUAG8duJ/fpL6o5FU85gx4niwALIvMVTCiZnogQ/ptmPu9BTTipj1I3xwokUMqIsSMwCIIT9l51uQaZ3TNyHu4EPgu5ZPCWeQHOA58Teo5vAV8Eri7rvB0avwyN1Lhae7MYzMw53FSsrj1soLCbF7JDCAzQvRFOYDPHl/lREuztYDMNSxp8UvODpnNHCZ8pBLvvBPGb+mk9zLo8ZYWv7cSeNxxk/1xbeO/nFYquGDn0FHTUsTp/4wtwAz9snAUfqGgaY5EeJ7PluBoTOHp6EiPEyVXKY5hqxwN4SkI6ZK+WBbrfDCVh1iludVBrt/57Zl3OjsmH4YL3OI6k+NgL5JXFFaAlyCoHCa16uWVpE/Z8kKMK1cKAn3gD25thhu8uXBmmdQeifDMU9M5cddgZtedFQY4FJ5tFJ5enGZLB0nPzmfuEK14RpGBontqgshLf/x6EMiHWRRjbgYH+tpC2z4yzJnn3rwY651XmXmtnDfHfWCUR6DgkrzhMmCmgdsrL4nQMdrcC+q5ZVJhTIfuqpMGjSnHis1TgFbXNOPIOktwg+U5MNEocPYW444GZ60oSOLHqDIfpJjTk8Rio8vRKi9HAGNmwgIQJSFtmIMCA4HGGwHZi7Gnqpcx696N/0ZI2bEZ4PAzAOm8Anqk2wj4Syfb9yh8gO4F0XwFcD2WjfZ4J4nrmoHNVkR0ZJbfseyaRmnXN4ThmnZj+dDFHN6JWggrov75qcn7ypeVo+CNY+dDH53gn+EE35uLw8MH77zVA+ZAZd9lKdlgbkncRqlEKoZOlalsOkOmLwn+Z065aUjnyNjjzQZnPaYa/05NzhhuXfX5Mc3sozp26AiG4HIIw/9ji5JLZNxhJL1OB8cAhrcfqCj/anuYu/xaWY4BDJs7mNI6NdLT1yG9pNcGcKpVnJFGfUG1d/hJPlZIWM2AiDEBheeOMVLhubMk/woUZkB/X7f99TiwYkD69+84/n5Q3mvK0D5eg1SyQu6xchnwu9ZlCJKY/OAy4WkQK2REQL9jL/aFqWD2NyJX/h62Vj1ER1sXcmt94S6opUb5kV7WeS5iiQaZfQYzV8DkKTy3y22jIDz5uzzZggOsQMa9qr11qTSlFsAK/k+O6u3dDEtYLAjBkk7Ru4cbxAtVyp1vabOODoLTUY4U5sGSiq5tab1bjRu/GNc20ygqowAZv/SNyeE4R94z4RIgMPyt92E7xiz+Zcy/AHSD0sRdYfZPwOxv9AnldjH9XXMRo2/EKs2PEYQaLYJOq0yQwrXJIzDzfv72J/TKlHTKvCkup8mcPjD5U1i+79ML1r8UQslVgCAjRfZ5pMgelPfCkts1t6+9SEwweTLaQD/ES2IX4a/qvXJHgfBr8ZlsTS4CGuoqQDpTEbCIn8I/FEYWgm9LWsQJODqeypgeb0QpFJZRJc2bhxl+9y0BMAywqO9VHevXwuw5JYVQjqpDwi6NinoM3wuWONVv+aP17lHTR8temhaGG1aAdGRpeq77EDZtWkXxruF2GsVnzPB+WMY9WN+PDJfsiBTgDmqvovYPfBr/J7MKeaalsP5Roy3jYJa3ISL9hZo09X4bwUrDCMpRZ9LnxZ41jh/GVXu1BKtzEdoXopwB+5mIuol4bkKJQEAfx/MAlLcda/gVtG9TzWP/oec/8YZPczTf/wdO918krZoSywAAAABJRU5ErkJggg=="
+  decimal = 18
+  initial_supply = 7_500_000_000
+  total_supply = 7_500_000_000
+  inflation_rate = 0
+  token_decimal = 18
+
+  [forge.poke]
+  address = "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+  balance = 4_000_000_000
+  daily_limit = 2_500_000
+  amount = 25
+
+  [forge.moderator]
+  address = "z1hQ5JmsH4EaofZydVTzuNpwHZh86XcK2k4"
+  publicKey = "rrFQHZ_RCKc6NvHgHyp1_x_3LT4gDnUm6X8Lg8IRmRM"
+
+  [[forge.accounts]]
+  address = "z1hQ5JmsH4EaofZydVTzuNpwHZh86XcK2k4"
+  pk = "rrFQHZ_RCKc6NvHgHyp1_x_3LT4gDnUm6X8Lg8IRmRM"
+  balance = 3_500_000_000
+
+[tendermint]
+moniker = "charging_block"
+path = "/Users/weipang/.forge_chains/forge_charging_block/forge_release/tendermint"
+keypath = "/Users/weipang/.forge_chains/forge_charging_block/keys"
+logpath = "logs"
+sock_proxy_app = "unix://socks/tm_proxy_app.sock"
+sock_rpc = "tcp://127.0.0.1:22013"
+sock_grpc = "tcp://127.0.0.1:26013"
+sock_p2p = "tcp://0.0.0.0:27013"
+sock_prof = ""
+persistent_peers = ""
+seed_peers = ""
+timeout_commit = "5s"
+create_empty_blocks = true
+seed_mode = false
+recheck = false
+
+  [tendermint.genesis]
+  genesis_time = "2018-11-05T19:22:08.938749Z"
+  chain_id = "charging-block"
+  max_bytes = 150_000
+  max_gas = -1
+  app_hash = ""
+
+    ### begin validators
+[[tendermint.genesis.validators]]
+### end validators
+
+[ipfs]
+path = "/Users/weipang/.forge_chains/forge_charging_block/forge_release/ipfs"
+logpath = "logs"
+
+[cache]
+path = "/Users/weipang/.forge_chains/forge_charging_block/forge_release/cache/mnesia_data_dir"
+
+[workshop]
+path = "/Users/weipang/.forge_chains/forge_charging_block/workshop"
+db = "sqlite://workshop.sqlite3"
+port = 8_819
+local_forge = "tcp://127.0.0.1:28222"
