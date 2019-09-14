@@ -1,18 +1,69 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
+import api from '../../libs/api';
+
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
 export default function Charging({ changePageCallBack }) {
+  const [errorMsg, setErrorMsg] = useState('');
+  const [errorOpen, setErrorOpen] = useState(false);
+  const finishCharging = async () => {
+    console.log('*****');
+    const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
+    if (chargingIdData && chargingIdData.chargingId) {
+      const res = await api.put(`/api/charging/${chargingIdData.chargingId}/disconnect`);
+      console.log(res);
+      if (res && res.data && res.data._id) {
+        localStorage.removeItem('charging_id');
+        changePageCallBack(0, 100);
+      } else if (res.data.error) {
+        setErrorMsg(res.data.error);
+        setErrorOpen(true);
+      }
+    } else {
+      setErrorOpen(true);
+      setErrorMsg('未查到充电单号');
+    }
+  };
+
   return (
     <Main>
       <img className="charging-pic" src="/static/images/charging.gif" alt="charging" />
-      <Button variant="contained" color="primary" className="finish-button" onClick={() => changePageCallBack(0, 100)}>
+      <Button variant="contained" color="primary" className="finish-button" onClick={() => finishCharging()}>
         充电结束
       </Button>
+      <Dialog
+        open={errorOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        fullWidth
+        maxWidth="xs"
+        onClose={() => {
+          setErrorOpen(false);
+        }}>
+        <DialogTitle id="alert-dialog-slide-title">Notice</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">{errorMsg}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setErrorOpen(false);
+            }}
+            color="primary">
+            确认
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Main>
   );
 }

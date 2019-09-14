@@ -8,7 +8,7 @@ import api from '../../libs/api';
 
 export default function ChargingMap({ changePageCallBack }) {
   const [chargingPoles, setChargingPoles] = useState([]);
-  const state = useAsync(async () => {
+  useAsync(async () => {
     const res = await api.get('/api/chargingPoles');
     console.log(res);
     if (res.data && res.data.length > 0) {
@@ -16,22 +16,23 @@ export default function ChargingMap({ changePageCallBack }) {
     }
   });
   const markerPosition = { longitude: 120, latitude: 30 };
-  const markerEvents = {
-    created: markerInstance => {
-      console.log('高德地图 Marker 实例创建成功；如果你要亲自对实例进行操作，可以从这里开始。比如：');
-      console.log(markerInstance.getPosition());
-    },
-  };
   return (
     <Main>
       <div className="right-container-map">
         <Map
-          zoom="8"
-          center={markerPosition}
+          zoom="10"
+          center={
+            chargingPoles.length > 0
+              ? { longitude: chargingPoles[0].longitude, latitude: chargingPoles[0].latitude }
+              : markerPosition
+          }
           plugins={['Scale', 'ControlBar']}
           mapStyle="amap://styles/darkblue"
           amapkey="8e79dd6f45a17c1686437f20cb85a6c2">
-          <Marker icon="" position={markerPosition} events={markerEvents} />
+          {chargingPoles.length > 0 &&
+            chargingPoles.map(item => (
+              <Marker icon="" position={{ longitude: item.longitude, latitude: item.latitude }} />
+            ))}
         </Map>
       </div>
       <div className="status-icons-left">
@@ -124,6 +125,7 @@ const Main = styled.main`
         border-top: solid 1px #eee;
         .address {
           flex: 1;
+          margin-right: 10px;
         }
         .distance {
           width: 50px;
