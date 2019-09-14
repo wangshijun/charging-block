@@ -125,6 +125,7 @@ require('../routes/payments').init(router);
 require('../routes/meta').init(router);
 require('../routes/charging_pole').init(router);
 require('../routes/transaction').init(router);
+require('../routes/charging_record').init(router);
 server.use(router);
 
 // Application start requirements
