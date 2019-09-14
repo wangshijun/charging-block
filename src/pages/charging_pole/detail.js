@@ -136,6 +136,9 @@ export default function PoleDetail({ query }) {
                     <span className="info-row__key">充电电量</span>
                     <span className="info-row__value">{tokens / state.value.price} 度</span>
                   </Typography>
+                  <Typography component="div" className="info-row battery-gif">
+                    <img src="/static/images/battery-pole.gif" alt="battery" />
+                  </Typography>
                 </React.Fragment>
               )}
 
@@ -248,5 +251,12 @@ const Main = styled.div`
   .status-container-charging {
     box-shadow: 0 2px 12px 7px #6dc398 inset;
     color: #6dc398;
+  }
+
+  .battery-gif {
+    margin: 0 auto;
+    img {
+      width: 300px;
+    }
   }
 `;

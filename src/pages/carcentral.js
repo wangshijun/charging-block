@@ -99,7 +99,12 @@ export default function CarPage() {
       const owner = getCarOwner();
       const pole = getChargingPole();
       if (amount > 0 && pole && owner) {
-        console.log('checkPayment', { amount, wallet, owner, pole });
+        console.log('checkPayment', {
+          amount,
+          wallet,
+          owner,
+          pole,
+        });
         // eslint-disable-next-line object-curly-newline
         const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid: pole });
         if (res.data.status === 200) {
@@ -113,20 +118,24 @@ export default function CarPage() {
   }, 1000);
 
   useMount(async () => {
-    const wallet = getCarWallet();
+    let wallet = getCarWallet();
     const owner = getCarOwner();
     setStorage({ wallet, owner });
     if (!wallet) {
-      const generated = await generateWallet();
-      setCarWallet(generated);
-      setStorage({ wallet: generated, owner });
+      wallet = await generateWallet();
+      setCarWallet(wallet);
+      setStorage({ wallet, owner });
     }
 
-    const chargingId = getChargingId();
-    if (chargingId) {
-      setBatteryClass('battery charging');
-      setCurrentPage(2);
-    }
+    console.log(wallet);
+    const res = await api.get(`/api/charging?carDid=${wallet.address}`);
+    console.log(res);
+
+    // const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
+    // if (chargingIdData && chargingIdData.chargingId) {
+    //   setBatteryClass('battery charging');
+    //   setCurrentPage(2);
+    // }
   }, []);
 
   const onBindOwner = () => {
