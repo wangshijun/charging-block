@@ -25,7 +25,12 @@ export default function IndexPage() {
           <Button href="/carcentral" className="button" size="large" variant="contained" color="primary">
             车载系统
           </Button>
-          <Button href="/charging_pole/initialize" className="button" size="large" variant="contained" color="primary">
+          <Button
+            href="/charging_pole/initialize"
+            className="button"
+            size="large"
+            variant="contained"
+            color="secondary">
             桩载系统
           </Button>
         </section>
