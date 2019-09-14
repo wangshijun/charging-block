@@ -20,11 +20,13 @@ const STATUS_CHARGED = 'charged';
 export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [status, setStatus] = useState(STATUS_IDLE);
+  const [statusDesc, setStatusDesc] = useState('等待充电');
 
   useInterval(
     async () => {
-      const res = await api.get(`/api/charging?poleId=${query.id}`);
+      // const res = await api.get(`/api/charging?poleId=${query.id}`);
       // Do something with res
+      // console.log(res);
     },
     status === STATUS_IDLE ? 500 : null
   );
@@ -32,6 +34,7 @@ export default function PoleDetail({ query }) {
   const state = useAsync(async () => {
     try {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
+      console.log(res);
       if (res.status === 200) {
         return res.data;
       }
@@ -84,12 +87,6 @@ export default function PoleDetail({ query }) {
                 <span className="info-row__value">{state.value.price} CBT/度</span>
               </Typography>
 
-              {status === STATUS_IDLE && (
-                <React.Fragment>
-                  <p>等待充电中</p>
-                </React.Fragment>
-              )}
-
               {status === STATUS_CHARGING && (
                 <React.Fragment>
                   <Typography component="div" className="info-row">
@@ -115,6 +112,8 @@ export default function PoleDetail({ query }) {
                   </Typography>
                 </React.Fragment>
               )}
+
+              <div className="status-container">{statusDesc}</div>
             </div>
             {isAuthOpen && (
               <Dialog open maxWidth="sm" disableBackdropClick disableEscapeKeyDown onClose={() => setAuthOpen(false)}>
@@ -178,5 +177,17 @@ const Main = styled.div`
         margin-left: 2px;
       }
     }
+  }
+
+  .status-container {
+    width: 200px;
+    height: 100px;
+    margin: 30px auto 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 7px #ccc inset;
+    line-height: 100px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
   }
 `;
