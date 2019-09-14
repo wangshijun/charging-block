@@ -21,7 +21,7 @@ module.exports = {
       try {
         const dbPoles = await ChargingPole.find({ did: { $not: { $eq: '' } } });
         if (!Array.isArray(dbPoles) || dbPoles.length === 0) {
-          res.json({ chargingPoles: [] });
+          return res.json({ chargingPoles: [] });
         }
 
         const size = 10;
