@@ -40,7 +40,7 @@ export default function IndexPage() {
 }
 
 const Main = styled.main`
-  margin: 80px 0 0;
+  padding: 120px 0;
 
   .page-header {
     margin-bottom: 20px;

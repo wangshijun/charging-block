@@ -144,7 +144,7 @@ export default function ProfilePage() {
 }
 
 const Main = styled.main`
-  margin: 80px 0;
+  padding: 120px 0;
   display: flex;
 
   .avatar {

@@ -22,7 +22,7 @@ export default function Layout({ title, children, contentOnly }) {
           <Header />
         </Container>
       </AppBar>
-      <Container style={{ minHeight: '60vh', padding: '120px 0' }}>{children}</Container>
+      <Container style={{ minHeight: '60vh' }}>{children}</Container>
     </Div>
   );
 }

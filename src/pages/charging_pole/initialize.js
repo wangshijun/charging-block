@@ -38,8 +38,6 @@ export default function ChargingPoleInit() {
     setError('');
 
     try {
-      data.content = Buffer.from(data.content).toString('base64');
-      data.signatures = data.signers.map(x => ({ email: x }));
       const res = await api.put('/api/chargingPoles', data);
 
       setLoading(false);
@@ -153,6 +151,8 @@ export default function ChargingPoleInit() {
 }
 
 const Main = styled.div`
+  padding: 120px 0;
+
   .form-body {
     display: flex;
     flex-direction: column;
@@ -176,5 +176,6 @@ const Main = styled.div`
 
   .submit {
     margin-top: 40px;
+    width: 400px;
   }
 `;
