@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Button from '@arcblock/ux/lib/Button';
+import Auth from '@arcblock/did-react/lib/Auth';
 
 import Layout from '../../components/layout';
 import api from '../../libs/api';
@@ -21,8 +22,8 @@ let defaults = {
   name: '我的测试充电桩',
   description: '万向黑客马拉松专用充电桩',
   address: '上海市虹口区临平北路28号',
-  latitude: '121.4908373',
-  longitude: '31.26313',
+  latitude: '31.26313',
+  longitude: '121.4908373',
   power: 40,
   price: 0.5,
 };
@@ -40,12 +41,19 @@ export default function ChargingPoleInit() {
   const state = useAsync(fetchMeta);
   const { handleSubmit, register, errors, setValue, getValues } = useForm();
   const [loading, setLoading] = useState(false);
+  const [created, setCreated] = useState(false);
   const [error, setError] = useState();
 
   useEffect(() => {
     register({ name: 'location' });
     register({ name: 'supplier' });
   }, [register]);
+
+  const onClaimChargingPileSuccess = () => {
+    setTimeout(() => {
+      window.location.href = `/chargingPoles/detail?id=${created._id}`;
+    });
+  };
 
   const onSubmit = async data => {
     setLoading(true);
@@ -56,10 +64,9 @@ export default function ChargingPoleInit() {
 
       setLoading(false);
       if (res.status === 200) {
-        // eslint-disable-next-line no-underscore-dangle
-        window.location.href = `/chargingPoles/detail?id=${res.data._id}`;
+        setCreated(res.data);
       } else {
-        setError(res.data.error || 'Error initialize contract');
+        setError(res.data.error || 'Error initialize charging pile');
       }
     } catch (err) {
       setLoading(false);
@@ -110,78 +117,96 @@ export default function ChargingPoleInit() {
             Initialize and Register Charging Pile
           </Typography>
 
-          <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-            {Object.keys(groups).map(g => (
-              <React.Fragment key={g}>
-                <Typography component="h4" variant="h5" className="form-subheader">
-                  {g}
-                </Typography>
-                <div className="form-subgroup">
-                  {Object.keys(groups[g]).map(name => {
-                    const { type, placeholder, required, options, multiple } = groups[g][name];
+          {created === false && (
+            <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
+              {Object.keys(groups).map(g => (
+                <React.Fragment key={g}>
+                  <Typography component="h4" variant="h5" className="form-subheader">
+                    {g}
+                  </Typography>
+                  <div className="form-subgroup">
+                    {Object.keys(groups[g]).map(name => {
+                      const { type, placeholder, required, options, multiple } = groups[g][name];
 
-                    if (['number', 'text'].includes(type)) {
-                      return (
-                        <TextField
-                          key={name}
-                          label={capitalize(name)}
-                          className={`input input-${name}`}
-                          margin="normal"
-                          error={errors[name] && errors[name].message}
-                          inputRef={register(required ? { required: `${name} is required` } : {})}
-                          InputProps={{
-                            name,
-                            disabled: loading,
-                            defaultValue: defaults[name],
-                            type,
-                            placeholder: placeholder || '',
-                          }}>
-                          {type === 'select' &&
-                            options.map(x => (
+                      if (['number', 'text'].includes(type)) {
+                        return (
+                          <TextField
+                            key={name}
+                            label={capitalize(name)}
+                            className={`input input-${name}`}
+                            margin="normal"
+                            error={errors[name] && errors[name].message}
+                            inputRef={register(required ? { required: `${name} is required` } : {})}
+                            InputProps={{
+                              name,
+                              disabled: loading,
+                              defaultValue: defaults[name],
+                              type,
+                              placeholder: placeholder || '',
+                            }}>
+                            {type === 'select' &&
+                              options.map(x => (
+                                <MenuItem key={x._id} value={x._id}>
+                                  {x.name}
+                                </MenuItem>
+                              ))}
+                          </TextField>
+                        );
+                      }
+
+                      if (['select'].includes(type)) {
+                        return (
+                          <Select
+                            key={name}
+                            multiple={multiple}
+                            label={capitalize(name)}
+                            value={getValues()[name] || defaults[name] || ''}
+                            onChange={e => setValue(name, e.target.value)}
+                            className={`input select-${name}`}
+                            error={errors[name] && errors[name].message}>
+                            {options.map(x => (
                               <MenuItem key={x._id} value={x._id}>
                                 {x.name}
                               </MenuItem>
                             ))}
-                        </TextField>
-                      );
-                    }
+                          </Select>
+                        );
+                      }
 
-                    if (['select'].includes(type)) {
-                      return (
-                        <Select
-                          key={name}
-                          multiple={multiple}
-                          label={capitalize(name)}
-                          value={getValues()[name] || defaults[name] || ''}
-                          onChange={e => setValue(name, e.target.value)}
-                          className={`input select-${name}`}
-                          error={errors[name] && errors[name].message}>
-                          {options.map(x => (
-                            <MenuItem key={x._id} value={x._id}>
-                              {x.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      );
-                    }
+                      return null;
+                    })}
+                  </div>
+                </React.Fragment>
+              ))}
 
-                    return null;
-                  })}
-                </div>
-              </React.Fragment>
-            ))}
-
-            <Button
-              type="submit"
-              size="large"
-              variant="contained"
-              color="primary"
-              disabled={loading}
-              className="submit">
-              {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
-            </Button>
-            {!!error && <p className="error">{error}</p>}
-          </form>
+              <Button
+                type="submit"
+                size="large"
+                variant="contained"
+                color="primary"
+                disabled={loading}
+                className="submit">
+                {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
+              </Button>
+              {!!error && <p className="error">{error}</p>}
+            </form>
+          )}
+          {created && created._id && (
+            <Auth
+              responsive
+              disableClose
+              action="claim"
+              checkFn={api.get}
+              extraParams={{ cpid: created._id }}
+              onSuccess={onClaimChargingPileSuccess}
+              messages={{
+                title: 'Claim Charging Pile',
+                scan: 'Scan QR code with Wallet to claim the charging pile',
+                confirm: 'Confirm claim on your Wallet',
+                success: 'The charging pile is initialized successfully on chain',
+              }}
+            />
+          )}
         </div>
       </Main>
     </Layout>
