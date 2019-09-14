@@ -8,7 +8,6 @@ import useForm from 'react-hook-form';
 import useAsync from 'react-use/lib/useAsync';
 
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,7 +15,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@arcblock/ux/lib/Button';
 import Auth from '@arcblock/did-react/lib/Auth';
 
-import Layout from '../../components/layout';
+import Layout from '../../components/pole';
 import api from '../../libs/api';
 
 let defaults = {
@@ -77,7 +76,7 @@ export default function ChargingPoleInit() {
 
   if (state.loading || !state.value) {
     return (
-      <Layout title="初始化充电桩" contentOnly>
+      <Layout title="初始化充电桩">
         <Main>
           <CircularProgress />
         </Main>
@@ -87,7 +86,7 @@ export default function ChargingPoleInit() {
 
   if (state.error) {
     return (
-      <Layout title="初始化充电桩" contentOnly>
+      <Layout title="初始化充电桩">
         <Main>{state.error.message}</Main>
       </Layout>
     );
@@ -111,139 +110,106 @@ export default function ChargingPoleInit() {
   };
 
   return (
-    <Layout title="Initialize Charging Pole" contentOnly>
-      <Wrapper>
-        <Main>
-          <div className="form">
-            <Typography component="h3" variant="h4" className="form-header">
-              Initialize
-            </Typography>
+    <Layout title="Initialize">
+      <Main>
+        <div className="form">
+          <Typography component="h3" variant="h4" className="form-header">
+            Initialize
+          </Typography>
 
-            {created === false && (
-              <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-                {Object.keys(groups).map(g => (
-                  <React.Fragment key={g}>
-                    <Typography component="h4" variant="h5" className="form-subheader">
-                      {g}
-                    </Typography>
-                    <div className="form-subgroup">
-                      {Object.keys(groups[g]).map(name => {
-                        const { type, placeholder, required, options, multiple } = groups[g][name];
+          <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
+            {Object.keys(groups).map(g => (
+              <React.Fragment key={g}>
+                <Typography component="h4" variant="h5" className="form-subheader">
+                  {g}
+                </Typography>
+                <div className="form-subgroup">
+                  {Object.keys(groups[g]).map(name => {
+                    const { type, placeholder, required, options, multiple } = groups[g][name];
 
-                        if (['number', 'text'].includes(type)) {
-                          return (
-                            <TextField
-                              key={name}
-                              label={capitalize(name)}
-                              className={`input input-${name}`}
-                              margin="normal"
-                              error={errors[name] && errors[name].message}
-                              inputRef={register(required ? { required: `${name} is required` } : {})}
-                              InputProps={{
-                                name,
-                                disabled: loading,
-                                defaultValue: defaults[name],
-                                type,
-                                placeholder: placeholder || '',
-                              }}>
-                              {type === 'select' &&
-                                options.map(x => (
-                                  <MenuItem key={x._id} value={x._id}>
-                                    {x.name}
-                                  </MenuItem>
-                                ))}
-                            </TextField>
-                          );
-                        }
+                    if (['number', 'text'].includes(type)) {
+                      return (
+                        <TextField
+                          key={name}
+                          label={capitalize(name)}
+                          className={`input input-${name}`}
+                          margin="normal"
+                          error={errors[name] && errors[name].message}
+                          inputRef={register(required ? { required: `${name} is required` } : {})}
+                          InputProps={{
+                            name,
+                            disabled: loading,
+                            defaultValue: defaults[name],
+                            type,
+                            placeholder: placeholder || '',
+                          }}>
+                          {type === 'select' &&
+                            options.map(x => (
+                              <MenuItem key={x._id} value={x._id}>
+                                {x.name}
+                              </MenuItem>
+                            ))}
+                        </TextField>
+                      );
+                    }
 
-                        if (['select'].includes(type)) {
-                          return (
-                            <Select
-                              key={name}
-                              multiple={multiple}
-                              label={capitalize(name)}
-                              value={getValues()[name] || defaults[name] || ''}
-                              onChange={e => setValue(name, e.target.value)}
-                              className={`input select-${name}`}
-                              error={errors[name] && errors[name].message}>
-                              {options.map(x => (
-                                <MenuItem key={x._id} value={x._id}>
-                                  {x.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          );
-                        }
+                    if (['select'].includes(type)) {
+                      return (
+                        <Select
+                          key={name}
+                          multiple={multiple}
+                          label={capitalize(name)}
+                          value={getValues()[name] || defaults[name] || ''}
+                          onChange={e => setValue(name, e.target.value)}
+                          className={`input select-${name}`}
+                          error={errors[name] && errors[name].message}>
+                          {options.map(x => (
+                            <MenuItem key={x._id} value={x._id}>
+                              {x.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      );
+                    }
 
-                        return null;
-                      })}
-                    </div>
-                  </React.Fragment>
-                ))}
+                    return null;
+                  })}
+                </div>
+              </React.Fragment>
+            ))}
 
-                <Button
-                  type="submit"
-                  size="large"
-                  variant="contained"
-                  color="primary"
-                  disabled={loading}
-                  className="submit">
-                  {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
-                </Button>
-                {!!error && <p className="error">{error}</p>}
-              </form>
-            )}
-            {created && created._id && (
-              <Auth
-                responsive
-                disableClose
-                action="claim"
-                checkFn={api.get}
-                extraParams={{ cpid: created._id }}
-                onSuccess={onClaimChargingPileSuccess}
-                messages={{
-                  title: 'Claim Charging Pile',
-                  scan: 'Scan QR code with Wallet to claim the charging pile',
-                  confirm: 'Confirm claim on your Wallet',
-                  success: 'The charging pile is initialized successfully on chain',
-                }}
-              />
-            )}
-          </div>
-        </Main>
-      </Wrapper>
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              className="submit">
+              {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
+            </Button>
+            {!!error && <p className="error">{error}</p>}
+          </form>
+          {created && created._id && (
+            <Auth
+              responsive
+              disableClose
+              action="claim"
+              checkFn={api.get}
+              extraParams={{ cpid: created._id }}
+              onSuccess={onClaimChargingPileSuccess}
+              messages={{
+                title: 'Claim Charging Pile',
+                scan: 'Scan QR code with Wallet to claim the charging pile',
+                confirm: 'Confirm claim on your Wallet',
+                success: 'The charging pile is initialized successfully on chain',
+              }}
+            />
+          )}
+        </div>
+      </Main>
     </Layout>
   );
 }
-
-const Wrapper = styled(Container)`
-  height: 100vh;
-  border: 16px solid #000000;
-  border-top-width: 64px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  position: relative;
-  box-shadow: inset 0 1px 1px 1px #000, inset 0 0 0 9px #111, 0 0 0 1px #ccc, 0 0 1px 2px hsla(0, 0%, 0%, 0.4),
-    0 0 50px hsla(0, 0%, 0%, 0.3);
-
-  && {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  &:after {
-    position: absolute;
-    top: -24px;
-    left: 50%;
-    content: 'Charging Block System';
-    transform: translate(-50%, -50%);
-    transform-origin: center;
-    font-size: 24px;
-    font-weight: 900;
-    color: #fff;
-    text-transform: uppercase;
-  }
-`;
 
 const Main = styled.div`
   box-shadow: inset 0 0 100px hsla(0, 0%, 0%, 0.3);
