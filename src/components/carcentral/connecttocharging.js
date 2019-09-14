@@ -22,6 +22,8 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
   const connectToPole = async () => {
     try {
       const res = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
+      const store = JSON.parse(localStorage.getItem('car'));
+      localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
       console.log(res);
       if (res && res.data && res.data._id) {
         const store = localStorage.getItem('car');

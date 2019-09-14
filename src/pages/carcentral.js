@@ -5,6 +5,7 @@ import { fromRandom } from '@arcblock/forge-wallet';
 import { fromUnitToToken } from '@arcblock/forge-util';
 import useMount from 'react-use/lib/useMount';
 import useAsync from 'react-use/lib/useAsync';
+import useInterval from '@arcblock/react-hooks/lib/useInterval';
 
 import Grid from '@material-ui/core/Grid';
 import Dialog from '@material-ui/core/Dialog';
@@ -83,6 +84,26 @@ export default function CarPage() {
     localStorage.setItem(storageKey, JSON.stringify({ wallet: wallet.toJSON() }));
     return wallet;
   };
+
+  const storageKeyCharging = 'charging';
+  useInterval(async () => {
+    try {
+      const amount = localStorage.getItem(storageKeyCharging);
+      // eslint-disable-next-line no-shadow
+      const { wallet, owner, poleDid } = JSON.parse(localStorage.getItem(storageKey));
+      console.log('amount', amount);
+      if (amount) {
+        // eslint-disable-next-line object-curly-newline
+        const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid });
+        if (res.data.status === 200) {
+          console.log(res);
+          localStorage.removeItem(storageKeyCharging);
+        }
+      }
+    } catch (err) {
+      console.error('check charging error', err);
+    }
+  }, 1000);
 
   useMount(async () => {
     const store = localStorage.getItem(storageKey);

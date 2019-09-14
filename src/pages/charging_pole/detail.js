@@ -46,6 +46,7 @@ export default function PoleDetail({ query }) {
     status === STATUS_IDLE ? 500 : null
   );
 
+  const storageKey = 'charging';
   useInterval(
     async () => {
       setTokens(tokens + 1);
@@ -54,6 +55,7 @@ export default function PoleDetail({ query }) {
       if (res.data && res.data.status) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
+          localStorage.setItem(storageKey, tokens);
           setStatusDesc('等待充电');
           // show dialog
           setShowTokens(tokens);
