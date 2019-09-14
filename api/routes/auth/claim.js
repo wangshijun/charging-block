@@ -21,7 +21,7 @@ const getPole = async cpid => {
 };
 
 const getAsset = async (cpid, owner) => {
-  await getPole(cpid);
+  const pole = await getPole(cpid);
 
   const asset = {
     moniker: `charging_pole_${cpid}`,
@@ -40,6 +40,9 @@ const getAsset = async (cpid, owner) => {
   };
 
   asset.address = ForgeSDK.Util.toAssetAddress(asset, wallet.toAddress());
+
+  pole.did = asset.address;
+  await pole.save();
 
   return asset;
 };

@@ -62,6 +62,11 @@ ChargingPole.add({
     label: '电网',
     index: true,
   },
+  did: {
+    type: types.Text,
+    label: 'DID',
+    default: '',
+  },
 });
 
 ChargingPole.defaultColumns =

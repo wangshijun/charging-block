@@ -14,7 +14,7 @@ import api from '../../libs/api';
 
 export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
-  const contract = useAsync(async () => {
+  const state = useAsync(async () => {
     try {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
       if (res.status === 200) {
@@ -26,17 +26,17 @@ export default function PoleDetail({ query }) {
     }
   });
 
-  if (contract.error) {
+  if (state.error) {
     return (
-      <Layout title="Contract">
-        <Main>{contract.error.message}</Main>
+      <Layout title="充电桩">
+        <Main>{state.error.message}</Main>
       </Layout>
     );
   }
 
-  if (contract.loading || !contract.value) {
+  if (state.loading || !state.value) {
     return (
-      <Layout title="Contract">
+      <Layout title="充电桩">
         <Main>
           <CircularProgress />
         </Main>
@@ -45,19 +45,54 @@ export default function PoleDetail({ query }) {
   }
 
   return (
-    <Layout title="Contract">
+    <Layout title="充电桩">
       <Main>
-        {(contract.loading || !contract.value) && <CircularProgress />}
-        {contract.error && (
+        {(state.loading || !state.value) && <CircularProgress />}
+        {state.error && (
           <Typography component="p" color="secondary">
-            {contract.error.message}
+            {state.error.message}
           </Typography>
         )}
-        {contract.value && (
+        {state.value && (
           <React.Fragment>
-            <pre>
-              <code>{JSON.stringify(contract.value, true, 2)}</code>
-            </pre>
+            <div className="info-rows">
+              <Typography component="div" className="info-row info-row--full">
+                <span className="info-row__key">所在位置</span>
+                <span className="info-row__value">{state.value.address}</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电流</span>
+                <span className="info-row__value">{state.value.power} A</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电价</span>
+                <span className="info-row__value">{state.value.price} CBT/度</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电流</span>
+                <span className="info-row__value">{state.value.power} A</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电价</span>
+                <span className="info-row__value">{state.value.price} CBT/度</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电流</span>
+                <span className="info-row__value">{state.value.power} A</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电价</span>
+                <span className="info-row__value">{state.value.price} CBT/度</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电流</span>
+                <span className="info-row__value">{state.value.power} A</span>
+              </Typography>
+              <Typography component="div" className="info-row">
+                <span className="info-row__key">充电电价</span>
+                <span className="info-row__value">{state.value.price} CBT/度</span>
+              </Typography>
+            </div>
             {isAuthOpen && (
               <Dialog open maxWidth="sm" disableBackdropClick disableEscapeKeyDown onClose={() => setAuthOpen(false)}>
                 <DidAuth
@@ -93,4 +128,32 @@ const Main = styled.div`
   height: 100%;
   padding: 32px;
   margin: 0;
+
+  .info-rows {
+    display: flex;
+    flex-wrap: wrap;
+
+    .info-row {
+      font-size: 16px;
+      width: 45%;
+      margin-right: 5%;
+      padding: 5px 0;
+      font-weight: bold;
+    }
+
+    .info-row--full {
+      width: 100%;
+      margin-right: 0;
+      border-bottom: 1px dashed #222;
+      margin-bottom: 24px;
+    }
+
+    .info-row__key {
+      margin-right: 16px;
+      &:after {
+        content: ':';
+        margin-left: 2px;
+      }
+    }
+  }
 `;
