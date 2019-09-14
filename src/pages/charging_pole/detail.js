@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useAsync from 'react-use/lib/useAsync';
 import styled from 'styled-components';
+import useInterval from '@arcblock/react-hooks/lib/useInterval';
 
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -19,6 +20,14 @@ const STATUS_CHARGED = 'charged';
 export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [status, setStatus] = useState(STATUS_IDLE);
+
+  useInterval(
+    async () => {
+      const res = await api.get(`/api/charging?poleId=${query.id}`);
+      // Do something with res
+    },
+    status === STATUS_IDLE ? 500 : null
+  );
 
   const state = useAsync(async () => {
     try {
