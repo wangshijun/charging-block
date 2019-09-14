@@ -5,18 +5,32 @@ const ChargingPole = keystone.list('ChargingPole').model;
 
 module.exports = {
   init(app) {
+    app.get('/api/charging', async (req, res) => {
+      try {
+        const { carDid } = req.query;
+        if (!carDid) {
+          return res.json({ status: 400, error: 'carDid is required' });
+        }
+
+        const record = await ChargingRecord.findOne({ carDid });
+        return res.json(record);
+      } catch (err) {
+        return res.json({ status: 500, error: 'get charging record failed' });
+      }
+    });
+
     app.get('/api/charging/:id', async (req, res) => {
       try {
         const { id } = req.params;
         const record = await ChargingRecord.findById(id);
         if (!record) {
-          return res.status(400).json(`Record ${id} not found`);
+          return res.json({ status: 400, error: `Record ${id} not found` });
         }
 
         return res.json(record);
       } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'get charging failed' });
+        return res.json({ status: 500, error: 'get charging record failed' });
       }
     });
 
@@ -38,7 +52,7 @@ module.exports = {
         return res.json(result);
       } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'disconnect charging failed' });
+        return res.json({ status: 500, error: 'disconnect charging failed' });
       }
     });
 
@@ -46,11 +60,11 @@ module.exports = {
       try {
         const { carDid, chargingPoleDid } = req.body;
         if (!carDid) {
-          return res.status(400).json('carDid is required');
+          return res.json({ status: 400, error: 'carDid is required' });
         }
 
         if (!chargingPoleDid) {
-          return res.status(400).json('chargingPoleDid is required');
+          return res.json({ status: 400, error: 'chargingPoleDid is required' });
         }
 
         const chargingPole = await ChargingPole.findOne({ did: chargingPoleDid });
@@ -61,7 +75,7 @@ module.exports = {
         }
 
         if (!chargingPole) {
-          return res.status(400).json(`Charging pole ${chargingPoleDid} is not found`);
+          return res.json({ status: 400, error: `Charging pole ${chargingPoleDid} is not found` });
         }
 
         const record = new ChargingRecord({
