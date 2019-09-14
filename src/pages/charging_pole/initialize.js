@@ -47,6 +47,7 @@ export default function ChargingPoleInit() {
   useEffect(() => {
     register({ name: 'location' });
     register({ name: 'supplier' });
+    register({ name: 'manufacturer' });
   }, [register]);
 
   const onClaimChargingPileSuccess = () => {
@@ -106,6 +107,7 @@ export default function ChargingPoleInit() {
     Relationship: {
       location: { type: 'select', label: '场地', options: state.value.locations },
       supplier: { type: 'select', label: '电网', options: state.value.suppliers },
+      manufacturer: { type: 'select', label: '生产商', options: state.value.manufacturers },
     },
   };
 

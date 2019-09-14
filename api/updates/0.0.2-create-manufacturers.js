@@ -31,9 +31,10 @@ module.exports = done => {
     info =>
       new Promise(resolve => {
         const wallet = fromRandom();
-        const { pk, sk } = wallet.toJSON();
+        const { pk, sk, address } = wallet.toJSON();
         info.publicKey = pk;
         info.secretKey = sk;
+        info.address = address;
         const manufacturer = new Manufacturer(info);
 
         manufacturer.save(err => {
