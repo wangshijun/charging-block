@@ -23,7 +23,7 @@ ChargingPole.add({
     required: true,
     initial: true,
   },
-  address: { type: types.Number, label: '地址', required: false },
+  address: { type: types.Text, label: '地址', required: false },
   latitude: { type: types.Number, label: '维度', required: false },
   longitude: { type: types.Number, label: '经度', required: false },
   power: { type: types.Number, label: '单价（度）', required: false },
