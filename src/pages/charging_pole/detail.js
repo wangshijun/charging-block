@@ -9,26 +9,61 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DidAuth from '@arcblock/did-react/lib/Auth';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 import Layout from '../../components/pole';
 import api from '../../libs/api';
 
 const STATUS_IDLE = 'idle';
 const STATUS_CHARGING = 'charging';
-const STATUS_CHARGED = 'charged';
 
 export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
+  const [isFinishChargeOpen, setFinishChargeOpen] = useState(false);
   const [status, setStatus] = useState(STATUS_IDLE);
   const [statusDesc, setStatusDesc] = useState('等待充电');
+  const [tokens, setTokens] = useState(0);
+  const [showTokens, setShowTokens] = useState(0);
 
   useInterval(
     async () => {
-      // const res = await api.get(`/api/charging?poleId=${query.id}`);
-      // Do something with res
-      // console.log(res);
+      const res = await api.get(`/api/chargingPoles/${query.id}`);
+      console.log(res);
+      if (res.data && res.data.status) {
+        setStatus(res.data.status);
+        if (res.data.status === STATUS_IDLE) {
+          setStatusDesc('等待充电');
+        } else if (res.data.status === STATUS_CHARGING) {
+          setStatusDesc('正在充电');
+        }
+      }
     },
     status === STATUS_IDLE ? 500 : null
+  );
+
+  useInterval(
+    async () => {
+      setTokens(tokens + 1);
+      const res = await api.get(`/api/chargingPoles/${query.id}`);
+      console.log(res);
+      if (res.data && res.data.status) {
+        setStatus(res.data.status);
+        if (res.data.status === STATUS_IDLE) {
+          setStatusDesc('等待充电');
+          // show dialog
+          setShowTokens(tokens);
+          setTokens(0);
+          setFinishChargeOpen(true);
+        } else if (res.data.status === STATUS_CHARGING) {
+          setStatusDesc('正在充电');
+        }
+      }
+    },
+    status === STATUS_CHARGING ? 500 : null
   );
 
   const state = useAsync(async () => {
@@ -91,29 +126,21 @@ export default function PoleDetail({ query }) {
                 <React.Fragment>
                   <Typography component="div" className="info-row">
                     <span className="info-row__key">充电金额</span>
-                    <span className="info-row__value">{state.value.power} A</span>
+                    <span className="info-row__value">{tokens} CBT</span>
                   </Typography>
                   <Typography component="div" className="info-row">
                     <span className="info-row__key">充电电量</span>
-                    <span className="info-row__value">{state.value.price} CBT/度</span>
+                    <span className="info-row__value">{tokens / state.value.price} 度</span>
                   </Typography>
                 </React.Fragment>
               )}
 
-              {status === STATUS_CHARGED && (
-                <React.Fragment>
-                  <Typography component="div" className="info-row">
-                    <span className="info-row__key">充电金额</span>
-                    <span className="info-row__value">{state.value.power} A</span>
-                  </Typography>
-                  <Typography component="div" className="info-row">
-                    <span className="info-row__key">充电电量</span>
-                    <span className="info-row__value">{state.value.price} CBT/度</span>
-                  </Typography>
-                </React.Fragment>
-              )}
-
-              <div className="status-container">{statusDesc}</div>
+              <div
+                className={
+                  status === STATUS_CHARGING ? 'status-container status-container-charging' : 'status-container'
+                }>
+                <div>{statusDesc}</div>
+              </div>
             </div>
             {isAuthOpen && (
               <Dialog open maxWidth="sm" disableBackdropClick disableEscapeKeyDown onClose={() => setAuthOpen(false)}>
@@ -130,6 +157,28 @@ export default function PoleDetail({ query }) {
                     success: 'You have successfully signed!',
                   }}
                 />
+              </Dialog>
+            )}
+            {isFinishChargeOpen && (
+              <Dialog
+                open
+                maxWidth="sm"
+                disableBackdropClick
+                disableEscapeKeyDown
+                onClose={() => setFinishChargeOpen(false)}>
+                <DialogTitle id="alert-dialog-slide-title">充电账单</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    <p>充电金额: {showTokens} CBT</p>
+                    <p>充电电量: {showTokens / state.value.price} 度</p>
+                    <p>结束时间: {Date()}</p>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={() => setFinishChargeOpen(false)} color="primary">
+                    确认
+                  </Button>
+                </DialogActions>
               </Dialog>
             )}
           </React.Fragment>
@@ -180,14 +229,20 @@ const Main = styled.div`
   }
 
   .status-container {
-    width: 200px;
-    height: 100px;
+    height: 80px;
     margin: 30px auto 0 auto;
     border-radius: 8px;
     box-shadow: 0 2px 12px 7px #ccc inset;
-    line-height: 100px;
+    line-height: 80px;
     text-align: center;
     font-size: 25px;
     font-weight: 500;
+    padding: 0 30px;
+    color: #282828;
+  }
+
+  .status-container-charging {
+    box-shadow: 0 2px 12px 7px #6dc398 inset;
+    color: #6dc398;
   }
 `;
