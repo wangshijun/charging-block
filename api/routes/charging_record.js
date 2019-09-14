@@ -28,11 +28,12 @@ module.exports = {
           return res.status(400).json(`Record ${id} not found`);
         }
 
-        if (record.status === 'done') {
+        if (record.status === 'finished') {
           return res.json(record);
         }
 
-        await record.update({ status: 'done', disconnectedAt: new Date() });
+        await record.update({ status: 'finished', disconnectedAt: new Date() });
+        await ChargingPole.update({ did: record.chargingPoleDid }, { $set: { status: 'idle' } });
         const result = await ChargingRecord.findById(record._id); // eslint-disable-line
         return res.json(result);
       } catch (error) {
@@ -72,6 +73,8 @@ module.exports = {
         });
 
         await record.save();
+        chargingPole.status = 'charging';
+        await chargingPole.save();
 
         return res.json(record);
       } catch (err) {

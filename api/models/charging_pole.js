@@ -67,6 +67,11 @@ ChargingPole.add({
     label: 'DID',
     default: '',
   },
+  status: {
+    type: types.Text,
+    label: '状态',
+    default: 'idle',
+  },
 });
 
 ChargingPole.defaultColumns =
