@@ -34,6 +34,7 @@ import {
   setChargingAmount,
   getChargingPole,
   getChargingId,
+  setChargingId,
 } from '../libs/storage';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
@@ -130,12 +131,11 @@ export default function CarPage() {
     console.log(wallet);
     const res = await api.get(`/api/charging?carDid=${wallet.address}`);
     console.log(res);
-
-    // const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
-    // if (chargingIdData && chargingIdData.chargingId) {
-    //   setBatteryClass('battery charging');
-    //   setCurrentPage(2);
-    // }
+    if (res && res.data && res.data._id) {
+      setChargingId(res.data._id);
+      setBatteryClass('battery charging');
+      setCurrentPage(2);
+    }
   }, []);
 
   const onBindOwner = () => {
