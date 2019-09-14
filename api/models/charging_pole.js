@@ -32,10 +32,15 @@ ChargingPole.add({
   connectedCars: { type: types.TextArray, label: '绑定的车' },
 
   operator: {
-    type: types.Relationship,
-    ref: 'User',
+    type: types.Text,
     size: 'small',
     label: '桩主',
+    index: true,
+  },
+  claimHash: {
+    type: types.Text,
+    size: 'small',
+    label: '初始化 Tx',
     index: true,
   },
   manufacturer: {

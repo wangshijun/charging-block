@@ -17,9 +17,9 @@ module.exports = {
         const chargingPole = new ChargingPole(req.body);
         const result = await chargingPole.save();
         console.log('initialize charing pole', result);
-        res.json({ chargingPole: chargingPole.toJSON() });
+        res.status(200).json(chargingPole.toJSON());
       } catch (err) {
-        res.jsonp({ status: 500, error: 'Cannot initialize charging pole' });
+        res.status(500).jsonp({ error: 'Cannot initialize charging pole' });
       }
     });
   },
