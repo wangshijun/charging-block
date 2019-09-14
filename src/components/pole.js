@@ -32,7 +32,7 @@ const Wrapper = styled(Container)`
     position: absolute;
     top: -24px;
     left: 50%;
-    content: 'Charging Block System';
+    content: 'Charging Control System';
     transform: translate(-50%, -50%);
     transform-origin: center;
     font-size: 24px;
