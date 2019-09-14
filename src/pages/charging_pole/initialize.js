@@ -15,7 +15,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@arcblock/ux/lib/Button';
 import Auth from '@arcblock/did-react/lib/Auth';
 
-import Layout from '../../components/layout';
+import Layout from '../../components/pole';
 import api from '../../libs/api';
 
 let defaults = {
@@ -51,7 +51,7 @@ export default function ChargingPoleInit() {
 
   const onClaimChargingPileSuccess = () => {
     setTimeout(() => {
-      window.location.href = `/chargingPoles/detail?id=${created._id}`;
+      window.location.href = `/charging_pole/detail?id=${created._id}`;
     });
   };
 
@@ -110,87 +110,85 @@ export default function ChargingPoleInit() {
   };
 
   return (
-    <Layout title="Initialize Charging Pole">
+    <Layout title="Initialize">
       <Main>
         <div className="form">
           <Typography component="h3" variant="h4" className="form-header">
-            Initialize and Register Charging Pile
+            Initialize
           </Typography>
 
-          {created === false && (
-            <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
-              {Object.keys(groups).map(g => (
-                <React.Fragment key={g}>
-                  <Typography component="h4" variant="h5" className="form-subheader">
-                    {g}
-                  </Typography>
-                  <div className="form-subgroup">
-                    {Object.keys(groups[g]).map(name => {
-                      const { type, placeholder, required, options, multiple } = groups[g][name];
+          <form className="form-body" onSubmit={handleSubmit(onSubmit)}>
+            {Object.keys(groups).map(g => (
+              <React.Fragment key={g}>
+                <Typography component="h4" variant="h5" className="form-subheader">
+                  {g}
+                </Typography>
+                <div className="form-subgroup">
+                  {Object.keys(groups[g]).map(name => {
+                    const { type, placeholder, required, options, multiple } = groups[g][name];
 
-                      if (['number', 'text'].includes(type)) {
-                        return (
-                          <TextField
-                            key={name}
-                            label={capitalize(name)}
-                            className={`input input-${name}`}
-                            margin="normal"
-                            error={errors[name] && errors[name].message}
-                            inputRef={register(required ? { required: `${name} is required` } : {})}
-                            InputProps={{
-                              name,
-                              disabled: loading,
-                              defaultValue: defaults[name],
-                              type,
-                              placeholder: placeholder || '',
-                            }}>
-                            {type === 'select' &&
-                              options.map(x => (
-                                <MenuItem key={x._id} value={x._id}>
-                                  {x.name}
-                                </MenuItem>
-                              ))}
-                          </TextField>
-                        );
-                      }
-
-                      if (['select'].includes(type)) {
-                        return (
-                          <Select
-                            key={name}
-                            multiple={multiple}
-                            label={capitalize(name)}
-                            value={getValues()[name] || defaults[name] || ''}
-                            onChange={e => setValue(name, e.target.value)}
-                            className={`input select-${name}`}
-                            error={errors[name] && errors[name].message}>
-                            {options.map(x => (
+                    if (['number', 'text'].includes(type)) {
+                      return (
+                        <TextField
+                          key={name}
+                          label={capitalize(name)}
+                          className={`input input-${name}`}
+                          margin="normal"
+                          error={errors[name] && errors[name].message}
+                          inputRef={register(required ? { required: `${name} is required` } : {})}
+                          InputProps={{
+                            name,
+                            disabled: loading,
+                            defaultValue: defaults[name],
+                            type,
+                            placeholder: placeholder || '',
+                          }}>
+                          {type === 'select' &&
+                            options.map(x => (
                               <MenuItem key={x._id} value={x._id}>
                                 {x.name}
                               </MenuItem>
                             ))}
-                          </Select>
-                        );
-                      }
+                        </TextField>
+                      );
+                    }
 
-                      return null;
-                    })}
-                  </div>
-                </React.Fragment>
-              ))}
+                    if (['select'].includes(type)) {
+                      return (
+                        <Select
+                          key={name}
+                          multiple={multiple}
+                          label={capitalize(name)}
+                          value={getValues()[name] || defaults[name] || ''}
+                          onChange={e => setValue(name, e.target.value)}
+                          className={`input select-${name}`}
+                          error={errors[name] && errors[name].message}>
+                          {options.map(x => (
+                            <MenuItem key={x._id} value={x._id}>
+                              {x.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      );
+                    }
 
-              <Button
-                type="submit"
-                size="large"
-                variant="contained"
-                color="primary"
-                disabled={loading}
-                className="submit">
-                {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
-              </Button>
-              {!!error && <p className="error">{error}</p>}
-            </form>
-          )}
+                    return null;
+                  })}
+                </div>
+              </React.Fragment>
+            ))}
+
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              className="submit">
+              {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
+            </Button>
+            {!!error && <p className="error">{error}</p>}
+          </form>
           {created && created._id && (
             <Auth
               responsive
@@ -214,7 +212,10 @@ export default function ChargingPoleInit() {
 }
 
 const Main = styled.div`
-  padding: 120px 0;
+  box-shadow: inset 0 0 100px hsla(0, 0%, 0%, 0.3);
+  height: 100%;
+  padding: 32px;
+  margin: 0;
 
   .form-body {
     display: flex;
@@ -232,8 +233,8 @@ const Main = styled.div`
     justify-content: flex-start;
 
     .input {
-      width: 35%;
-      margin-right: 5%;
+      width: 36%;
+      margin-right: 4%;
     }
   }
 

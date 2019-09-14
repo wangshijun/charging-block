@@ -6,6 +6,16 @@ const ChargingPole = keystone.list('ChargingPole').model;
 
 module.exports = {
   init(app) {
+    // Get charging pole
+    app.get('/api/chargingPoles/:id', async (req, res) => {
+      try {
+        const pole = await ChargingPole.findById(req.params.id);
+        res.status(200).json(pole);
+      } catch (err) {
+        res.status(500).jsonp({ error: 'Cannot initialize charging pole' });
+      }
+    });
+
     // list charging pole
     app.get('/api/chargingPoles', async (req, res) => {
       const dbPoles = await ChargingPole.find();
