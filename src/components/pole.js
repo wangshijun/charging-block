@@ -39,5 +39,7 @@ const Wrapper = styled(Container)`
     font-weight: 900;
     color: #fff;
     text-transform: uppercase;
+    width: 100%;
+    text-align: center;
   }
 `;
