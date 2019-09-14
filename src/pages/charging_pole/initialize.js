@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Cookie from 'js-cookie';
+import capitalize from 'lodash/capitalize';
 import useForm from 'react-hook-form';
 
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +16,11 @@ import api from '../../libs/api';
 let defaults = {
   name: '我的测试充电桩',
   description: '万向黑客马拉松专用充电桩',
+  address: '',
+  latitude: '',
+  longitude: '',
+  power: 40,
+  price: 0.5,
 };
 
 if (process.env.NODE_ENV === 'production') {
@@ -92,7 +98,7 @@ export default function ChargingPoleInit() {
   };
 
   return (
-    <Layout title="Create Contract">
+    <Layout title="Initialize Charging Pole">
       <Main>
         <div className="form">
           <Typography component="h3" variant="h4" className="form-header">
@@ -105,29 +111,37 @@ export default function ChargingPoleInit() {
                 <Typography component="h4" variant="h5" className="form-subheader">
                   {g}
                 </Typography>
-                {Object.keys(groups[g]).map(name => (
-                  <TextField
-                    label={name}
-                    className={`"input input-${name}"`}
-                    margin="normal"
-                    variant="outlined"
-                    fullWidth
-                    error={errors[name] && errors[name].message}
-                    helperText={errors[name] ? errors[name].message : ''}
-                    inputRef={register(groups[g][name].required ? { required: `${name} is required` } : {})}
-                    InputProps={{
-                      name,
-                      disabled: loading,
-                      defaultValue: defaults[name],
-                      type: groups[g][name].type,
-                      placeholder: groups[g][name].placeholder || '',
-                    }}
-                  />
-                ))}
+                <div className="form-subgroup">
+                  {Object.keys(groups[g]).map(name => (
+                    <TextField
+                      key={name}
+                      label={capitalize(name)}
+                      className={`input input-${name}`}
+                      margin="normal"
+                      variant="outlined"
+                      error={errors[name] && errors[name].message}
+                      helperText={errors[name] ? errors[name].message : ''}
+                      inputRef={register(groups[g][name].required ? { required: `${name} is required` } : {})}
+                      InputProps={{
+                        name,
+                        disabled: loading,
+                        defaultValue: defaults[name],
+                        type: groups[g][name].type,
+                        placeholder: groups[g][name].placeholder || '',
+                      }}
+                    />
+                  ))}
+                </div>
               </React.Fragment>
             ))}
 
-            <Button type="submit" size="large" variant="contained" color="primary" disabled={loading}>
+            <Button
+              type="submit"
+              size="large"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              className="submit">
               {loading ? <CircularProgress size={24} /> : 'Initialize Charging Pile'}
             </Button>
             {!!error && <p className="error">{error}</p>}
@@ -138,4 +152,29 @@ export default function ChargingPoleInit() {
   );
 }
 
-const Main = styled.div``;
+const Main = styled.div`
+  .form-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-subheader {
+    margin-top: 40px;
+  }
+
+  .form-subgroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    .input {
+      width: 35%;
+      margin-right: 5%;
+    }
+  }
+
+  .submit {
+    margin-top: 40px;
+  }
+`;
