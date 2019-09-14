@@ -95,8 +95,8 @@ export default function Header() {
           onSuccess={onLogin}
           messages={{
             title: 'login',
-            scan: 'Scan QR code with ABT Wallet',
-            confirm: 'Confirm login on your ABT Wallet',
+            scan: 'Scan QR code with Wallet',
+            confirm: 'Confirm login on your Wallet',
             success: 'You have successfully signed in!',
           }}
         />

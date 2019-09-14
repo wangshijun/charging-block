@@ -8,6 +8,9 @@ import Helmet from 'react-helmet';
 import theme from '../libs/theme';
 
 const GlobalStyle = createGlobalStyle`
+  a {
+    text-decoration: none;
+  }
 `;
 
 class MyApp extends App {
