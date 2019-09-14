@@ -33,9 +33,7 @@ module.exports = {
         }
 
         await record.update({ status: 'finished', disconnectedAt: new Date() });
-        const tmp = await ChargingPole.update({}, { $set: { status: 'idle' } }, { multi: true });
-        console.log('----');
-        console.log(tmp);
+        await ChargingPole.update({}, { $set: { status: 'idle' } }, { multi: true });
         const result = await ChargingRecord.findById(record._id); // eslint-disable-line
         return res.json(result);
       } catch (error) {
@@ -59,7 +57,7 @@ module.exports = {
 
         const existedRecord = await ChargingRecord.findOne({ status: 'charging', $or: [{ carDid }, { chargingPole }] });
         if (existedRecord) {
-          return res.json({ error: 'Current is charging', status: 400 });
+          return res.json(existedRecord);
         }
 
         if (!chargingPole) {
@@ -75,9 +73,7 @@ module.exports = {
         });
 
         await record.save();
-        const tmp = await ChargingPole.update({}, { $set: { status: 'charging' } }, { multi: true });
-        console.log('----');
-        console.log(tmp);
+        await ChargingPole.update({}, { $set: { status: 'charging' } }, { multi: true });
 
         return res.json(record);
       } catch (err) {
