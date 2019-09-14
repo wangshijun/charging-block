@@ -119,6 +119,7 @@ handlers.attach(Object.assign({ app: router }, require('../routes/auth/login')))
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/payment')));
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/checkin')));
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/claim')));
+handlers.attach(Object.assign({ app: router }, require('../routes/auth/faucet')));
 require('../routes/session').init(router);
 require('../routes/payments').init(router);
 require('../routes/meta').init(router);

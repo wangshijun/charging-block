@@ -5,6 +5,7 @@ const keystone = require('keystone');
 const ForgeSDK = require('@arcblock/forge-sdk');
 
 const auth = require('../../libs/auth');
+
 const wallet = ForgeSDK.Wallet.fromJSON(auth.wallet);
 
 const getPole = async cpid => {
