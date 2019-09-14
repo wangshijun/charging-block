@@ -1,3 +1,5 @@
+require('../../.compiled/aggregate/javascript/index');
+
 const Mcrypto = require('@arcblock/mcrypto');
 const ForgeSDK = require('@arcblock/forge-sdk');
 const MongoStorage = require('@arcblock/did-auth-storage-mongo');

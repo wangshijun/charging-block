@@ -26,6 +26,10 @@ module.exports = {
                 typeUrl: 'fg:t:transfer',
                 rules: [],
               },
+              {
+                typeUrl: 'fg:t:aggregate',
+                rules: [],
+              },
             ],
           },
         },

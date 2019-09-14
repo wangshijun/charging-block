@@ -45,6 +45,10 @@ Transaction.add({
     required: true,
     initial: true,
   },
+  operator: {
+    type: types.Text,
+    label: '桩主 DID',
+  },
   carDid: {
     type: types.Text,
     label: '车的 DID',
@@ -54,6 +58,12 @@ Transaction.add({
   carOwnerDid: {
     type: types.Text,
     label: '车主 DID',
+    required: true,
+    initial: true,
+  },
+  txHash: {
+    type: types.Text,
+    label: 'txHash',
     required: true,
     initial: true,
   },
