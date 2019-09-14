@@ -32,10 +32,10 @@ module.exports = done => {
       new Promise(resolve => {
         info.name = `${info.address}充电桩`;
         info.description = `${info.address}充电桩`;
-        info.price = 1.2;
-        info.power = 5.6;
-        const start = Math.floor(Math.random() * carModels);
-        info.supportedCarModels = carModels.slice(start, start * Math.ceil(Math.random(10)));
+        info.price = (1.2 + Math.random()).toFixed(2);
+        info.power = parseInt(90 + 50 * Math.random(), 10);
+        const start = Math.floor(Math.random() * carModels.length) + 2;
+        info.supportedCarModels = carModels.slice(start, start * Math.ceil(Math.random() * 10));
 
         const chargingPole = new ChargingPole(info);
 
