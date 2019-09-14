@@ -116,7 +116,7 @@ export default function ChargingPoleInit() {
         <Main>
           <div className="form">
             <Typography component="h3" variant="h4" className="form-header">
-              Initialize and Register Charging Pile
+              Initialize
             </Typography>
 
             {created === false && (
