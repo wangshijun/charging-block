@@ -8,7 +8,7 @@ const ChargingRecord = new keystone.List('ChargingRecord', {
   track: true,
   searchFields: 'carDid chargingPole',
   defaultSort: '-createdAt',
-  schema: { collection: 'car-models' },
+  schema: { collection: 'charging-records' },
 });
 
 ChargingRecord.add({
@@ -20,7 +20,7 @@ ChargingRecord.add({
   },
   chargingPole: {
     type: types.Relationship,
-    ref: 'ChargingRecord',
+    ref: 'ChargingPole',
     label: '充电桩',
     required: true,
     initial: true,
