@@ -1,3 +1,4 @@
+/* eslint-disable import/newline-after-import */
 /* eslint-disable no-console */
 const path = require('path');
 const cors = require('cors');
@@ -92,11 +93,6 @@ server.use(
 // ------------------------------------------------------------------------------
 const { decode } = require('../libs/jwt');
 const { handlers, wallet } = require('../libs/auth');
-const loginAuth = require('../routes/auth/login');
-const paymentAuth = require('../routes/auth/payment');
-const checkinAuth = require('../routes/auth/checkin');
-const sessionRoutes = require('../routes/session');
-const paymentsRoutes = require('../routes/payments');
 
 // Auth routes
 server.use(bearerToken());
@@ -119,11 +115,11 @@ server.use((req, res, next) => {
 
 // API routes
 const router = express.Router();
-handlers.attach(Object.assign({ app: router }, loginAuth));
-handlers.attach(Object.assign({ app: router }, checkinAuth));
-handlers.attach(Object.assign({ app: router }, paymentAuth));
-sessionRoutes.init(router);
-paymentsRoutes.init(router);
+handlers.attach(Object.assign({ app: router }, require('../routes/auth/login')));
+handlers.attach(Object.assign({ app: router }, require('../routes/auth/payment')));
+handlers.attach(Object.assign({ app: router }, require('../routes/auth/checkin')));
+require('../routes/session').init(router);
+require('../routes/payments').init(router);
 server.use(router);
 
 // Application start requirements
