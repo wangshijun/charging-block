@@ -1,4 +1,5 @@
 const keystone = require('keystone');
+
 const types = keystone.Field.Types;
 
 const User = new keystone.List('User', {

@@ -1,4 +1,5 @@
 const keystone = require('keystone');
+
 const types = keystone.Field.Types;
 
 const ChargingPole = new keystone.List('ChargingPole', {
@@ -26,8 +27,8 @@ ChargingPole.add({
   address: { type: types.Text, label: '地址', required: false },
   latitude: { type: types.Number, label: '维度', required: false },
   longitude: { type: types.Number, label: '经度', required: false },
-  power: { type: types.Number, label: '单价（度）', required: false },
-  price: { type: types.Number, label: '功率（A）', required: false },
+  price: { type: types.Number, label: '单价（度）', required: false },
+  power: { type: types.Number, label: '功率（A）', required: false },
   supportedCarModels: { type: types.TextArray, label: '兼容的车型', required: false },
   connectedCars: { type: types.TextArray, label: '绑定的车' },
 
