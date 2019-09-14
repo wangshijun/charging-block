@@ -18,6 +18,12 @@ ChargingRecord.add({
     required: true,
     initial: true,
   },
+  chargingPoleDid: {
+    type: types.Text,
+    label: '充电桩DID',
+    required: true,
+    initial: true,
+  },
   chargingPole: {
     type: types.Relationship,
     ref: 'ChargingPole',
