@@ -64,8 +64,6 @@ Transaction.add({
   txHash: {
     type: types.Text,
     label: 'txHash',
-    required: true,
-    initial: true,
   },
 });
 

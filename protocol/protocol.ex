@@ -4,26 +4,6 @@ defmodule CoreTx.Aggregate do
     tx :aggregate
   end
 
-  defmodule VerifyTime do
-
-    use ForgeAbi.Unit
-    use ForgePipe.Builder
-
-    @seconds_per_hour 60 * 60
-    @thirty_seconds 30
-
-    def init(opts), do: opts
-
-    def call(%{context: context, itx: itx} = info, _opts) do
-      itx_seconds = itx.time.seconds
-      block_seconds = context.block_time.seconds
-      case (itx_seconds < block_seconds or itx_seconds - block_seconds <= @thirty_seconds) and block_seconds - itx_seconds <= @seconds_per_hour do
-        true -> info
-        _ -> put_status(info, :invalid_time)
-      end
-    end
-  end
-
   defmodule UpdateTx do
     @moduledoc """
     create asset pipe

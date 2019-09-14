@@ -8,8 +8,7 @@ import "type.proto";
 message AggregateTx {
   string poleId = 1;  // stock keeping unit
   string carId = 2;  // stock keeping unit
-  forge_abi.BigUint value = 3;
-  google.protobuf.Timestamp time = 4;
+  BigUint value = 3;
   string operator = 5;  // who runs vending machine business
   string manufacturer = 6;  // who produces vending machine
   string supplier = 7;  // who supplies for vending machine

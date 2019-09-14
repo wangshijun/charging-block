@@ -1,6 +1,6 @@
 ---
 name: aggregate
-version: 5
+version: 6
 tags:
   - trade
 namespace: CoreTx

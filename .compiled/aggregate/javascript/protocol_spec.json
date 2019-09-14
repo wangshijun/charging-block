@@ -13,12 +13,8 @@
               "id": 2
             },
             "value": {
-              "type": "forge_abi.BigUint",
+              "type": "BigUint",
               "id": 3
-            },
-            "time": {
-              "type": "google.protobuf.Timestamp",
-              "id": 4
             },
             "operator": {
               "type": "string",

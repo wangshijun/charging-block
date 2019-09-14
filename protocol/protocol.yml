@@ -3,14 +3,12 @@ name: aggregate
 check:
   - pipe: verify_info
     conditions:
-      - expr: "info.itx.sku !== \"\" and info.itx.value !== nil and info.itx.time !== nil and info.itx.operator !== \"\" and info.itx.manufacturer !== \"\" and info.itx.supplier !== \"\" and info.itx.location !== \"\" "
+      - expr: info.itx.value !== nil and info.itx.operator !== \"\" and info.itx.manufacturer !== \"\" and info.itx.supplier !== \"\" and info.itx.location !== \"\" "
         error: :insufficient_data
       - expr: "info.tx.nonce == 0"
         error: :invalid_nonce
 
 verify:
-  - pipe: :custom
-    name: verify_time
   - pipe: extract_state
     from: [:itx, :operator]
     to: [:priv, :operator_state]
@@ -30,4 +28,4 @@ verify:
 
 update:
   - pipe: :custom
-    name: update_tx 
+    name: update_tx

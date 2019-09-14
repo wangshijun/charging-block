@@ -67,7 +67,6 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
         poleid: jspb.Message.getFieldWithDefault(msg, 1, ''),
         carid: jspb.Message.getFieldWithDefault(msg, 2, ''),
         value: (f = msg.getValue()) && type_pb.BigUint.toObject(includeInstance, f),
-        time: (f = msg.getTime()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
         operator: jspb.Message.getFieldWithDefault(msg, 5, ''),
         manufacturer: jspb.Message.getFieldWithDefault(msg, 6, ''),
         supplier: jspb.Message.getFieldWithDefault(msg, 7, ''),
@@ -119,11 +118,6 @@ proto.forge_abi.AggregateTx.deserializeBinaryFromReader = function(msg, reader) 
         var value = new type_pb.BigUint();
         reader.readMessage(value, type_pb.BigUint.deserializeBinaryFromReader);
         msg.setValue(value);
-        break;
-      case 4:
-        var value = new google_protobuf_timestamp_pb.Timestamp();
-        reader.readMessage(value, google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
-        msg.setTime(value);
         break;
       case 5:
         var value = /** @type {string} */ (reader.readString());
@@ -184,10 +178,6 @@ proto.forge_abi.AggregateTx.serializeBinaryToWriter = function(message, writer) 
   f = message.getValue();
   if (f != null) {
     writer.writeMessage(3, f, type_pb.BigUint.serializeBinaryToWriter);
-  }
-  f = message.getTime();
-  if (f != null) {
-    writer.writeMessage(4, f, google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter);
   }
   f = message.getOperator();
   if (f.length > 0) {
@@ -260,35 +250,6 @@ proto.forge_abi.AggregateTx.prototype.clearValue = function() {
  */
 proto.forge_abi.AggregateTx.prototype.hasValue = function() {
   return jspb.Message.getField(this, 3) != null;
-};
-
-/**
- * optional google.protobuf.Timestamp time = 4;
- * @return {?proto.google.protobuf.Timestamp}
- */
-proto.forge_abi.AggregateTx.prototype.getTime = function() {
-  return /** @type{?proto.google.protobuf.Timestamp} */ (jspb.Message.getWrapperField(
-    this,
-    google_protobuf_timestamp_pb.Timestamp,
-    4
-  ));
-};
-
-/** @param {?proto.google.protobuf.Timestamp|undefined} value */
-proto.forge_abi.AggregateTx.prototype.setTime = function(value) {
-  jspb.Message.setWrapperField(this, 4, value);
-};
-
-proto.forge_abi.AggregateTx.prototype.clearTime = function() {
-  this.setTime(undefined);
-};
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.forge_abi.AggregateTx.prototype.hasTime = function() {
-  return jspb.Message.getField(this, 4) != null;
 };
 
 /**
