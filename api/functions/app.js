@@ -120,6 +120,7 @@ handlers.attach(Object.assign({ app: router }, require('../routes/auth/payment')
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/checkin')));
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/claim')));
 handlers.attach(Object.assign({ app: router }, require('../routes/auth/faucet')));
+handlers.attach(Object.assign({ app: router }, require('../routes/auth/connect')));
 require('../routes/session').init(router);
 require('../routes/payments').init(router);
 require('../routes/meta').init(router);

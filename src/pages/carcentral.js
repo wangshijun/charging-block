@@ -1,26 +1,113 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { fromRandom } from '@arcblock/forge-wallet';
+import { fromUnitToToken } from '@arcblock/forge-util';
+import useMount from 'react-use/lib/useMount';
+import useAsync from 'react-use/lib/useAsync';
+
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
+import Button from '@arcblock/ux/lib/Button';
+import Auth from '@arcblock/did-react/lib/Auth';
+
 import Layout from '../components/layout';
 import ChargingMap from '../components/carcentral/chargingmap';
 import ConnectToCharging from '../components/carcentral/connecttocharging';
 import Charging from '../components/carcentral/charging';
 
+import forge from '../libs/gql';
+import api from '../libs/api';
+
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-export default function ProfilePage() {
+/* eslint-disable-next-line react/prop-types */
+const OwnerBalance = ({ did, onClick }) => {
+  console.log('OwnerBalance', did);
+  const state = useAsync(async () => {
+    const { state: account } = await forge.getAccountState({ address: did });
+    return account.balance;
+  });
+
+  if (!did) {
+    return (
+      <Button variant="contained" size="small" onClick={onClick}>
+        Bind Owner Wallet
+      </Button>
+    );
+  }
+
+  if (state.error) {
+    return <p>{state.error.message}</p>;
+  }
+
+  if (state.loading || !state.value) {
+    return <CircularProgress />;
+  }
+
+  return <div className="tokens">{fromUnitToToken(state.value, 18)} CBT</div>;
+};
+
+export default function CarPage() {
+  const [storage, setStorage] = useState({});
   const [countPage, setCountPage] = useState(0);
+  const [binding, setBinding] = useState(false);
   const [batteryClass, setBatteryClass] = useState('battery charging-start');
   const [batteryLevel, setBatteryLevel] = useState(0);
   const [open, setOpen] = useState(false);
+
+  console.log(storage);
+
+  const storageKey = 'car';
+  const generateWallet = async () => {
+    const wallet = fromRandom();
+    await forge.sendDeclareTx({
+      tx: {
+        itx: { moniker: `car_${wallet.toAddress()}` },
+      },
+      wallet,
+    });
+    localStorage.setItem(storageKey, JSON.stringify({ wallet: wallet.toJSON() }));
+    return wallet;
+  };
+
+  useMount(async () => {
+    const store = localStorage.getItem(storageKey);
+    if (store) {
+      try {
+        const storeJson = JSON.parse(store);
+        if (!storeJson.wallet) {
+          throw new Error('invalid wallet in car');
+        }
+        setStorage(storeJson);
+      } catch (err) {
+        // Do nothing
+        const wallet = await generateWallet();
+        setStorage({ wallet });
+      }
+    } else {
+      const wallet = await generateWallet();
+      setStorage({ wallet });
+    }
+  }, []);
+
+  const onBindOwner = () => {
+    setBinding(true);
+  };
+
+  const onBindOwnerDone = result => {
+    console.log('onBindOwnerDone', result);
+    const newStorage = { ...storage, owner: result.owner };
+    localStorage.setItem(storageKey, JSON.stringify(newStorage));
+    setStorage(newStorage);
+    setBinding(false);
+  };
 
   const changePageCallBack = (page, batteryLevelTemp) => {
     setCountPage(page);
@@ -55,9 +142,7 @@ export default function ProfilePage() {
               <img className="car-image" src="/static/images/car.png" alt="car" />
             </div>
             <div className="menus-container">
-              <div className="tokens">
-                <span>1000 </span>CBT
-              </div>
+              <OwnerBalance did={storage.owner} onClick={onBindOwner} />
             </div>
           </Grid>
           <Grid className="right-container" item xs={12}>
@@ -89,6 +174,23 @@ export default function ProfilePage() {
             </Button>
           </DialogActions>
         </Dialog>
+        {binding && (
+          <Auth
+            responsive
+            disableClose
+            action="connect"
+            checkFn={api.get}
+            onClose={() => setBinding(false)}
+            extraParams={{ carId: storage.wallet.address }}
+            onSuccess={onBindOwnerDone}
+            messages={{
+              title: 'Connect Wallet',
+              scan: 'Scan QR code with Wallet to complete the connection',
+              confirm: 'Confirm connection on your Wallet',
+              success: 'The car is connected successfully with your wallet',
+            }}
+          />
+        )}
       </Main>
     </Layout>
   );
