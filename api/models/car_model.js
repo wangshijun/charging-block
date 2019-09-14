@@ -12,21 +12,21 @@ const CarModel = new keystone.List('CarModel', {
 });
 
 CarModel.add({
-  name: {
-    type: types.Text,
-    label: '名字',
-    required: true,
-    initial: true,
-  },
   model: {
     type: types.Text,
-    label: '地址',
+    label: '车型',
     required: true,
     initial: true,
   },
   subModel: {
     type: types.Text,
     label: '子型号',
+    required: true,
+    initial: true,
+  },
+  brand: {
+    type: types.Text,
+    label: '品牌',
     required: true,
     initial: true,
   },
@@ -38,5 +38,5 @@ CarModel.add({
   },
 });
 
-CarModel.defaultColumns = 'name, address, publicKey, createdAt, updatedAt';
+CarModel.defaultColumns = 'model, subModel, brand, createdAt, updatedAt';
 CarModel.register();

@@ -1,4 +1,4 @@
-module.exports = [
+const poles = [
   {
     address: '七宝',
     latitude: '31.155364678184498',
@@ -292,3 +292,188 @@ module.exports = [
   { address: '马陆', latitude: '31.319459', longitude: '121.276831' },
   { address: '龙漕路', latitude: '31.169453', longitude: '121.444391' },
 ];
+
+const carModels = [
+  {
+    brand: 'Tesla',
+    model: 'Model S',
+    subModel: '2019超长续航版',
+    endurance: '660',
+  },
+  {
+    brand: 'Tesla',
+    model: 'Model 3',
+    subModel: '2019 高性能全轮驱动版',
+    endurance: '600',
+  },
+  {
+    brand: 'Tesla',
+    model: 'Model X',
+    subModel: '2019 长续航版',
+    endurance: '575',
+  },
+  {
+    brand: '小鹏',
+    model: 'G3',
+    subModel: '2020 520 长续航',
+    endurance: '520',
+  },
+  {
+    brand: '比亚迪',
+    model: '秦Pro EV',
+    subModel: '2019 高续航',
+    endurance: '520',
+  },
+  {
+    brand: '比亚迪',
+    model: '唐 EV',
+    subModel: '2019 EV600 智联创悦版',
+    endurance: '520',
+  },
+  {
+    brand: '威马',
+    model: 'EXS',
+    subModel: '2019 EXS Lite探索版',
+    endurance: '520',
+  },
+  {
+    brand: '广汽新能源',
+    model: 'Aion S',
+    subModel: '2019 炫 630',
+    endurance: '510',
+  },
+  {
+    brand: '蔚来',
+    model: 'ES6',
+    subModel: '2019 性能版',
+    endurance: '510',
+  },
+  {
+    brand: '比亚迪',
+    model: '宋Pro EV',
+    subModel: '2019 高续航旗舰版',
+    endurance: '502',
+  },
+  {
+    brand: '北汽新能源',
+    model: 'EX3',
+    subModel: '2019 劲悦版',
+    endurance: '501',
+  },
+  {
+    brand: '捷豹',
+    model: 'I-PACE',
+    subModel: '2018 EV400 S',
+    endurance: '500',
+  },
+  {
+    brand: '几何汽车',
+    model: '几何A',
+    subModel: '2019 超长续航 平方版',
+    endurance: '500',
+  },
+  {
+    brand: '天际',
+    model: 'ME7',
+    subModel: '2019 尊崇始发版',
+    endurance: '500',
+  },
+  {
+    brand: '吉利',
+    model: '帝豪 EV',
+    subModel: '2019 EV500 超长续航版',
+    endurance: '500',
+  },
+  {
+    brand: '江淮',
+    model: 'iEVS4',
+    subModel: '2019 豪华智尊型',
+    endurance: '470',
+  },
+  {
+    brand: '野马',
+    model: 'EC60',
+    subModel: '2019 R500 创客版',
+    endurance: '460',
+  },
+  {
+    brand: '腾势',
+    model: '腾势',
+    subModel: '2018 500 时尚版',
+    endurance: '451',
+  },
+  {
+    brand: '北汽新能源',
+    model: 'EU5',
+    subModel: '2018 R550 智潮版',
+    endurance: '450',
+  },
+  {
+    brand: '吉利',
+    model: '帝豪GSe',
+    subModel: '2019 600 尊尚版',
+    endurance: '450',
+  },
+  {
+    brand: '长安',
+    model: '逸动EV',
+    subModel: '2018 EV460 智享版',
+    endurance: '430',
+  },
+  {
+    brand: '云度',
+    model: '派1',
+    subModel: '2019 Pro 远行版',
+    endurance: '426',
+  },
+  {
+    brand: '蔚来',
+    model: 'ES8',
+    subModel: '2018 基准版',
+    endurance: '425',
+  },
+  {
+    brand: '上汽荣威',
+    model: 'Ei5',
+    subModel: '2019 舒适版',
+    endurance: '420',
+  },
+  {
+    brand: '江淮',
+    model: 'iEV7S',
+    subModel: '2019 豪华智享版',
+    endurance: '420',
+  },
+  {
+    brand: '北汽新能源',
+    model: 'EX5',
+    subModel: '2019 悦风版',
+    endurance: '415',
+  },
+  {
+    brand: '广汽新能源',
+    model: 'GE3',
+    subModel: '2019 530 乐享版',
+    endurance: '410',
+  },
+  {
+    brand: '江淮',
+    model: 'iEVA50',
+    subModel: '2019 豪华智能版',
+    endurance: '410',
+  },
+  {
+    brand: '东风风行',
+    model: '风行S50 EV',
+    subModel: '2019 运营版',
+    endurance: '410',
+  },
+  {
+    brand: '广汽三菱',
+    model: '祺智EV',
+    subModel: '2019 锋行版',
+    endurance: '410',
+  },
+];
+
+module.exports = { poles, carModels };
