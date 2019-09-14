@@ -22,8 +22,8 @@ let defaults = {
   name: '我的测试充电桩',
   description: '万向黑客马拉松专用充电桩',
   address: '上海市虹口区临平北路28号',
-  latitude: '121.4908373',
-  longitude: '31.26313',
+  latitude: '31.26313',
+  longitude: '121.4908373',
   power: 40,
   price: 0.5,
 };
@@ -50,7 +50,6 @@ export default function ChargingPoleInit() {
   }, [register]);
 
   const onClaimChargingPileSuccess = () => {
-    debugger;
     setTimeout(() => {
       window.location.href = `/chargingPoles/detail?id=${created._id}`;
     });
