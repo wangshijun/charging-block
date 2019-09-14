@@ -9,7 +9,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import api from '../../libs/api';
@@ -23,10 +22,11 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
   const connectToPole = async () => {
     try {
       const res = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
-      const store = localStorage.getItem('car');
-      localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
       console.log(res);
       if (res && res.data && res.data._id) {
+        const store = localStorage.getItem('car');
+        localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
+        localStorage.setItem('charging_id', JSON.stringify({ chargingId: res.data._id }));
         changePageCallBack(2, 50);
       } else if (res.data.error) {
         setErrorMsg(res.data.error);

@@ -62,7 +62,7 @@ const OwnerBalance = ({ did }) => {
 
 export default function CarPage() {
   const [storage, setStorage] = useState({});
-  const [countPage, setCountPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [binding, setBinding] = useState(false);
   const [batteryClass, setBatteryClass] = useState('battery charging-start');
   const [batteryLevel, setBatteryLevel] = useState(0);
@@ -102,6 +102,12 @@ export default function CarPage() {
       const wallet = await generateWallet();
       setStorage({ wallet });
     }
+
+    const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
+    if (chargingIdData && chargingIdData.chargingId) {
+      setBatteryClass('battery charging');
+      setCurrentPage(2);
+    }
   }, []);
 
   const onBindOwner = () => {
@@ -120,7 +126,7 @@ export default function CarPage() {
     if (poleDidTemp) {
       setPoleDid(poleDidTemp);
     }
-    setCountPage(page);
+    setCurrentPage(page);
     setBatteryLevel(batteryLevelTemp);
     if (batteryLevelTemp === 0) {
       setBatteryClass('battery charging-start');
@@ -162,18 +168,18 @@ export default function CarPage() {
             </div>
           </Grid>
           <Grid className="right-container" item xs={12}>
-            {countPage === 0 && <ChargingMap changePageCallBack={changePageCallBack} />}
-            {countPage === 1 && (
+            {currentPage === 0 && <ChargingMap changePageCallBack={changePageCallBack} />}
+            {currentPage === 1 && (
               <ConnectToCharging
                 poleDid={poleDid}
                 carDid={storage.wallet.address}
                 changePageCallBack={changePageCallBack}
                 goFirstPage={() => {
-                  setCountPage(0);
+                  setCurrentPage(0);
                 }}
               />
             )}
-            {countPage === 2 && <Charging changePageCallBack={changePageCallBack} />}
+            {currentPage === 2 && <Charging changePageCallBack={changePageCallBack} />}
           </Grid>
         </Grid>
         <Dialog open={open} TransitionComponent={Transition} keepMounted fullWidth maxWidth="sm" onClose={handleClose}>

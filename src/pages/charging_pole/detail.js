@@ -38,6 +38,7 @@ export default function PoleDetail({ query }) {
         if (res.data.status === STATUS_IDLE) {
           setStatusDesc('等待充电');
         } else if (res.data.status === STATUS_CHARGING) {
+          setFinishChargeOpen(false);
           setStatusDesc('正在充电');
         }
       }
@@ -59,6 +60,7 @@ export default function PoleDetail({ query }) {
           setTokens(0);
           setFinishChargeOpen(true);
         } else if (res.data.status === STATUS_CHARGING) {
+          setFinishChargeOpen(false);
           setStatusDesc('正在充电');
         }
       }
