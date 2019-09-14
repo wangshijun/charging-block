@@ -51,7 +51,7 @@ export default function ChargingPoleInit() {
 
   const onClaimChargingPileSuccess = () => {
     setTimeout(() => {
-      window.location.href = `/chargingPoles/detail?id=${created._id}`;
+      window.location.href = `/charging_pole/detail?id=${created._id}`;
     });
   };
 
