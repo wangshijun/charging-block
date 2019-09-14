@@ -37,11 +37,6 @@ export default function IndexPage() {
 const Main = styled.main`
   margin: 80px 0 0;
 
-  a {
-    color: ${props => props.theme.colors.green};
-    text-decoration: none;
-  }
-
   .page-header {
     margin-bottom: 20px;
   }
@@ -52,14 +47,18 @@ const Main = styled.main`
 
   .section {
     margin-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .section__header {
       margin-bottom: 20px;
     }
   }
 
-  .demos {
-    .demo {
-      height: 240px;
+  .button {
+    margin-right: 16px;
+    &:last-of-type {
+      margin-right: 0;
     }
   }
 `;
