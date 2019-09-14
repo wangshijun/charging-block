@@ -27,21 +27,27 @@ import api from '../libs/api';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
-/* eslint-disable-next-line react/prop-types */
-const OwnerBalance = ({ did, onClick }) => {
-  console.log('OwnerBalance', did);
-  const state = useAsync(async () => {
-    const { state: account } = await forge.getAccountState({ address: did });
-    return account.balance;
-  });
+const fetchers = {};
+const getFetcher = did => {
+  if (!fetchers[did]) {
+    fetchers[did] = async () => {
+      try {
+        const { state: account } = await forge.getAccountState({ address: did });
+        return account.balance;
+      } catch (err) {
+        console.error(err);
+      }
 
-  if (!did) {
-    return (
-      <Button variant="contained" size="small" onClick={onClick}>
-        Bind Owner Wallet
-      </Button>
-    );
+      return null;
+    };
   }
+
+  return fetchers[did];
+};
+
+/* eslint-disable-next-line react/prop-types */
+const OwnerBalance = ({ did }) => {
+  const state = useAsync(getFetcher(did));
 
   if (state.error) {
     return <p>{state.error.message}</p>;
@@ -142,7 +148,13 @@ export default function CarPage() {
               <img className="car-image" src="/static/images/car.png" alt="car" />
             </div>
             <div className="menus-container">
-              <OwnerBalance did={storage.owner} onClick={onBindOwner} />
+              {storage.owner ? (
+                <OwnerBalance did={storage.owner} />
+              ) : (
+                <Button variant="contained" size="small" onClick={onBindOwner}>
+                  Bind Owner Wallet
+                </Button>
+              )}
             </div>
           </Grid>
           <Grid className="right-container" item xs={12}>

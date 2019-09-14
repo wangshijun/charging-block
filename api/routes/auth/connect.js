@@ -52,7 +52,7 @@ module.exports = {
       const hash2 = await ForgeSDK.sendTransferTx({
         tx: {
           itx: {
-            to: userDid,
+            to: userAddress,
             value: fromTokenToUnit(10000, 18),
           },
         },
