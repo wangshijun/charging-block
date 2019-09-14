@@ -12,8 +12,14 @@ import DidAuth from '@arcblock/did-react/lib/Auth';
 import Layout from '../../components/pole';
 import api from '../../libs/api';
 
+const STATUS_IDLE = 'idle';
+const STATUS_CHARGING = 'charging';
+const STATUS_CHARGED = 'charged';
+
 export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
+  const [status, setStatus] = useState(STATUS_IDLE);
+
   const state = useAsync(async () => {
     try {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
@@ -68,30 +74,38 @@ export default function PoleDetail({ query }) {
                 <span className="info-row__key">充电电价</span>
                 <span className="info-row__value">{state.value.price} CBT/度</span>
               </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电流</span>
-                <span className="info-row__value">{state.value.power} A</span>
-              </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电价</span>
-                <span className="info-row__value">{state.value.price} CBT/度</span>
-              </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电流</span>
-                <span className="info-row__value">{state.value.power} A</span>
-              </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电价</span>
-                <span className="info-row__value">{state.value.price} CBT/度</span>
-              </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电流</span>
-                <span className="info-row__value">{state.value.power} A</span>
-              </Typography>
-              <Typography component="div" className="info-row">
-                <span className="info-row__key">充电电价</span>
-                <span className="info-row__value">{state.value.price} CBT/度</span>
-              </Typography>
+
+              {status === STATUS_IDLE && (
+                <React.Fragment>
+                  <p>等待充电中</p>
+                </React.Fragment>
+              )}
+
+              {status === STATUS_CHARGING && (
+                <React.Fragment>
+                  <Typography component="div" className="info-row">
+                    <span className="info-row__key">充电金额</span>
+                    <span className="info-row__value">{state.value.power} A</span>
+                  </Typography>
+                  <Typography component="div" className="info-row">
+                    <span className="info-row__key">充电电量</span>
+                    <span className="info-row__value">{state.value.price} CBT/度</span>
+                  </Typography>
+                </React.Fragment>
+              )}
+
+              {status === STATUS_CHARGED && (
+                <React.Fragment>
+                  <Typography component="div" className="info-row">
+                    <span className="info-row__key">充电金额</span>
+                    <span className="info-row__value">{state.value.power} A</span>
+                  </Typography>
+                  <Typography component="div" className="info-row">
+                    <span className="info-row__key">充电电量</span>
+                    <span className="info-row__value">{state.value.price} CBT/度</span>
+                  </Typography>
+                </React.Fragment>
+              )}
             </div>
             {isAuthOpen && (
               <Dialog open maxWidth="sm" disableBackdropClick disableEscapeKeyDown onClose={() => setAuthOpen(false)}>
