@@ -25,8 +25,7 @@ module.exports = done => {
       const tasks = poles.map(
         info =>
           new Promise(resolve => {
-            info.name = `${info.address}充电桩`;
-            info.description = `${info.address}充电桩`;
+            info.description = info.address;
             info.price = (1.2 + Math.random()).toFixed(2);
             info.power = parseInt(90 + 50 * Math.random(), 10);
 
