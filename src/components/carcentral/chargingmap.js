@@ -1,10 +1,20 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+import React, { useState } from 'react';
 import { Map, Marker } from 'react-amap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import useAsync from 'react-use/lib/useAsync';
+import api from '../../libs/api';
 
 export default function ChargingMap({ changePageCallBack }) {
+  const [chargingPoles, setChargingPoles] = useState([]);
+  const state = useAsync(async () => {
+    const res = await api.get('/api/chargingPoles');
+    console.log(res);
+    if (res.data && res.data.length > 0) {
+      setChargingPoles(res.data.filter(item => item.did));
+    }
+  });
   const markerPosition = { longitude: 120, latitude: 30 };
   const markerEvents = {
     created: markerInstance => {
@@ -12,7 +22,6 @@ export default function ChargingMap({ changePageCallBack }) {
       console.log(markerInstance.getPosition());
     },
   };
-  const chargings = ['', '', '', '', '', '', '', '', ''];
   return (
     <Main>
       <div className="right-container-map">
@@ -34,16 +43,18 @@ export default function ChargingMap({ changePageCallBack }) {
       <div className="charging-list">
         <div className="title">CHARGING LIST</div>
         <div className="list-container">
-          {chargings.map(() => (
-            <div
-              className="list-item"
-              onClick={() => {
-                changePageCallBack(1, 0);
-              }}>
-              <div className="address">具体地址</div>
-              <div className="distance">100m</div>
-            </div>
-          ))}
+          {chargingPoles &&
+            chargingPoles.map(item => (
+              <div
+                key={`${item._id}`}
+                className="list-item"
+                onClick={() => {
+                  changePageCallBack(1, 0, item.did);
+                }}>
+                <div className="address">{item.name}</div>
+                <div className="distance">{item.distance}m</div>
+              </div>
+            ))}
         </div>
       </div>
     </Main>

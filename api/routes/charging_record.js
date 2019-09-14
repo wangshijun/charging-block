@@ -57,7 +57,7 @@ module.exports = {
 
         const existedRecord = await ChargingRecord.findOne({ status: 'charging', $or: [{ carDid }, { chargingPole }] });
         if (existedRecord) {
-          return res.status(400).json('Current is charging');
+          return res.json({ error: 'Current is charging', status: 400 });
         }
 
         if (!chargingPole) {

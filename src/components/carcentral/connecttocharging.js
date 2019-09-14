@@ -1,13 +1,42 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import api from '../../libs/api';
 
-export default function ConnectToCharging({ changePageCallBack, goFirstPage }) {
+const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
+
+export default function ConnectToCharging({ changePageCallBack, goFirstPage, poleDid, carDid }) {
+  const [errorMsg, setErrorMsg] = useState('');
+  const [errorOpen, setErrorOpen] = useState(false);
+
+  const connectToPole = async () => {
+    try {
+      const res = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
+      const store = localStorage.getItem('car');
+      localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
+      console.log(res);
+      if (res && res.data && res.data._id) {
+        changePageCallBack(2, 50);
+      } else if (res.data.error) {
+        setErrorMsg(res.data.error);
+        setErrorOpen(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Main>
       <IconButton
@@ -25,14 +54,33 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage }) {
       <div className="warn-button">
         <div className="pulse" />
         <div className="pulse1" />
-        <Button
-          variant="contained"
-          color="primary"
-          className="connect-button dot"
-          onClick={() => changePageCallBack(2, 50)}>
+        <Button variant="contained" color="primary" className="connect-button dot" onClick={() => connectToPole()}>
           自动连接
         </Button>
       </div>
+      <Dialog
+        open={errorOpen}
+        TransitionComponent={Transition}
+        keepMounted
+        fullWidth
+        maxWidth="xs"
+        onClose={() => {
+          setErrorOpen(false);
+        }}>
+        <DialogTitle id="alert-dialog-slide-title">Notice</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">{errorMsg}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setErrorOpen(false);
+            }}
+            color="primary">
+            确认
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Main>
   );
 }
@@ -40,6 +88,8 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage }) {
 ConnectToCharging.propTypes = {
   changePageCallBack: PropTypes.func.isRequired,
   goFirstPage: PropTypes.func.isRequired,
+  poleDid: PropTypes.string.isRequired,
+  carDid: PropTypes.string.isRequired,
 };
 
 const warn = keyframes`
