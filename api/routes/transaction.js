@@ -16,10 +16,10 @@ module.exports = {
       const { wallet, amount, owner, poleDid } = req.body;
       console.log('send aggregate start:', req.body);
       if (!wallet) {
-        return res.status(400).jsonp({ error: 'Car wallet invalid' });
+        return res.jsonp({ status: 400, error: 'Car wallet invalid' });
       }
       if (!owner) {
-        return res.status(400).jsonp({ error: 'Car owner invalid' });
+        return res.jsonp({ status: 400, error: 'Car owner invalid' });
       }
 
       const pole = await ChargingPole.findOne({ did: poleDid })
@@ -28,7 +28,7 @@ module.exports = {
         .populate('supplier')
         .populate('location');
       if (!pole) {
-        return res.status(400).jsonp({ error: 'Charging pole not found' });
+        return res.jsonp({ status: 400, error: 'Charging pole not found' });
       }
 
       const car = ForgeSDK.Wallet.fromJSON(wallet);
@@ -158,7 +158,7 @@ module.exports = {
       });
       await tx.save();
 
-      res.json({ transaction: tx.toJSON() });
+      res.json({ status: 200, transaction: tx.toJSON() });
     });
   },
 };

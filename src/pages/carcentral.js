@@ -89,13 +89,16 @@ export default function CarPage() {
   useInterval(async () => {
     try {
       const amount = localStorage.getItem(storageKeyCharging);
+      // eslint-disable-next-line no-shadow
       const { wallet, owner, poleDid } = JSON.parse(localStorage.getItem(storageKey));
       console.log('amount', amount);
       if (amount) {
         // eslint-disable-next-line object-curly-newline
         const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid });
-        console.log(res);
-        localStorage.removeItem(storageKeyCharging);
+        if (res.data.status === 200) {
+          console.log(res);
+          localStorage.removeItem(storageKeyCharging);
+        }
       }
     } catch (err) {
       console.error('check charging error', err);
