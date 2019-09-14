@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import api from '../../libs/api';
+import { setChargingPole, setChargingId } from '../../libs/storage';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -22,13 +23,10 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
   const connectToPole = async () => {
     try {
       const res = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
-      const store = JSON.parse(localStorage.getItem('car'));
-      localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
       console.log(res);
       if (res && res.data && res.data._id) {
-        const store = localStorage.getItem('car');
-        localStorage.setItem('car', JSON.stringify({ ...store, poleDid }));
-        localStorage.setItem('charging_id', JSON.stringify({ chargingId: res.data._id }));
+        setChargingPole(poleDid);
+        setChargingId(res.data._id);
         changePageCallBack(2, 50);
       } else if (res.data.error) {
         setErrorMsg(res.data.error);

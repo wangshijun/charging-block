@@ -25,6 +25,16 @@ import Charging from '../components/carcentral/charging';
 
 import forge from '../libs/gql';
 import api from '../libs/api';
+import {
+  getCarWallet,
+  setCarWallet,
+  getCarOwner,
+  setCarOwner,
+  getChargingAmount,
+  setChargingAmount,
+  getChargingPole,
+  getChargingId,
+} from '../libs/storage';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -70,9 +80,6 @@ export default function CarPage() {
   const [open, setOpen] = useState(false);
   const [poleDid, setPoleDid] = useState('');
 
-  console.log(storage);
-
-  const storageKey = 'car';
   const generateWallet = async () => {
     const wallet = fromRandom();
     await forge.sendDeclareTx({
@@ -81,23 +88,23 @@ export default function CarPage() {
       },
       wallet,
     });
-    localStorage.setItem(storageKey, JSON.stringify({ wallet: wallet.toJSON() }));
+    setCarWallet(wallet.toJSON());
     return wallet;
   };
 
-  const storageKeyCharging = 'charging';
   useInterval(async () => {
     try {
-      const amount = localStorage.getItem(storageKeyCharging);
-      // eslint-disable-next-line no-shadow
-      const { wallet, owner, poleDid } = JSON.parse(localStorage.getItem(storageKey));
-      console.log('amount', amount);
-      if (amount) {
+      const amount = getChargingAmount();
+      const wallet = getCarWallet();
+      const owner = getCarOwner();
+      const pole = getChargingPole();
+      if (amount > 0 && pole && owner) {
+        console.log('checkPayment', { amount, wallet, owner, pole });
         // eslint-disable-next-line object-curly-newline
-        const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid });
+        const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid: pole });
         if (res.data.status === 200) {
           console.log(res);
-          localStorage.removeItem(storageKeyCharging);
+          setChargingAmount(0);
         }
       }
     } catch (err) {
@@ -106,26 +113,17 @@ export default function CarPage() {
   }, 1000);
 
   useMount(async () => {
-    const store = localStorage.getItem(storageKey);
-    if (store) {
-      try {
-        const storeJson = JSON.parse(store);
-        if (!storeJson.wallet) {
-          throw new Error('invalid wallet in car');
-        }
-        setStorage(storeJson);
-      } catch (err) {
-        // Do nothing
-        const wallet = await generateWallet();
-        setStorage({ wallet });
-      }
-    } else {
-      const wallet = await generateWallet();
-      setStorage({ wallet });
+    const wallet = getCarWallet();
+    const owner = getCarOwner();
+    setStorage({ wallet, owner });
+    if (!wallet) {
+      const generated = await generateWallet();
+      setCarWallet(generated);
+      setStorage({ wallet: generated, owner });
     }
 
-    const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
-    if (chargingIdData && chargingIdData.chargingId) {
+    const chargingId = getChargingId();
+    if (chargingId) {
       setBatteryClass('battery charging');
       setCurrentPage(2);
     }
@@ -138,7 +136,7 @@ export default function CarPage() {
   const onBindOwnerDone = result => {
     console.log('onBindOwnerDone', result);
     const newStorage = { ...storage, owner: result.owner };
-    localStorage.setItem(storageKey, JSON.stringify(newStorage));
+    setCarOwner(result.owner);
     setStorage(newStorage);
     setBinding(false);
   };

@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import api from '../../libs/api';
+import { getChargingId, setChargingId } from '../../libs/storage';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -17,13 +18,12 @@ export default function Charging({ changePageCallBack }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [errorOpen, setErrorOpen] = useState(false);
   const finishCharging = async () => {
-    console.log('*****');
-    const chargingIdData = JSON.parse(localStorage.getItem('charging_id'));
-    if (chargingIdData && chargingIdData.chargingId) {
-      const res = await api.put(`/api/charging/${chargingIdData.chargingId}/disconnect`);
+    const chargingId = getChargingId();
+    if (chargingId) {
+      const res = await api.put(`/api/charging/${chargingId}/disconnect`);
       console.log(res);
       if (res && res.data && res.data._id) {
-        localStorage.removeItem('charging_id');
+        setChargingId('');
         changePageCallBack(0, 100);
       } else if (res.data.error) {
         setErrorMsg(res.data.error);

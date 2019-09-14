@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 
 import Layout from '../../components/pole';
 import api from '../../libs/api';
+import { setChargingAmount } from '../../libs/storage';
 
 const STATUS_IDLE = 'idle';
 const STATUS_CHARGING = 'charging';
@@ -46,7 +47,6 @@ export default function PoleDetail({ query }) {
     status === STATUS_IDLE ? 500 : null
   );
 
-  const storageKey = 'charging';
   useInterval(
     async () => {
       setTokens(tokens + 1);
@@ -55,7 +55,7 @@ export default function PoleDetail({ query }) {
       if (res.data && res.data.status) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
-          localStorage.setItem(storageKey, tokens);
+          setChargingAmount(tokens);
           setStatusDesc('等待充电');
           // show dialog
           setShowTokens(tokens);
