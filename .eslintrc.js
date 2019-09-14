@@ -45,6 +45,7 @@ module.exports = {
         props: false,
       },
     ],
+    'no-console': 'off',
   },
   globals: {
     logger: true,
