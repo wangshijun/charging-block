@@ -238,7 +238,7 @@ export default function CarPage() {
           </Grid>
         </Grid>
         <Dialog open={open} TransitionComponent={Transition} keepMounted fullWidth maxWidth="sm" onClose={handleClose}>
-          <DialogTitle id="alert-dialog-slide-title">Charging Complete</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title">Bill</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               <p>电量: {chargingAmount / 0.5} 度</p>
@@ -248,7 +248,7 @@ export default function CarPage() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
-              确认
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>

@@ -179,18 +179,18 @@ export default function PoleDetail({ query }) {
                 disableBackdropClick
                 disableEscapeKeyDown
                 onClose={() => setFinishChargeOpen(false)}>
-                <DialogTitle id="alert-dialog-slide-title">充电账单</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">Bill</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-slide-description">
                     <Typography component="p">充电金额: {showTokens} CBT</Typography>
                     <Typography component="p">充电电量: {showTokens / state.value.price} 度</Typography>
-                    <Typography component="p">结束时间: {Date()}</Typography>
+                    <Typography component="p">结束时间: {Date().toTimeString()}</Typography>
                     <Typography component="p">今日累计: 充电 {Math.round(Math.random() * 10) + 1} 次</Typography>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={() => setFinishChargeOpen(false)} color="primary">
-                    确认
+                    Confirm
                   </Button>
                 </DialogActions>
               </Dialog>
