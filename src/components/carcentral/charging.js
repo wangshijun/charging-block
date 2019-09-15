@@ -52,12 +52,13 @@ export default function Charging({ changePageCallBack }) {
 
   useInterval(
     () => {
-      setCurrentValue(currentValue + 1);
       if (currentValue >= 100) {
         finishCharging();
+      } else {
+        setCurrentValue(currentValue + 1);
       }
     },
-    currentValue >= 100 ? null : 500
+    currentValue > 100 ? null : 200
   );
 
   return (

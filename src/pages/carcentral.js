@@ -110,9 +110,8 @@ export default function CarPage() {
       const owner = getCarOwner();
       const pole = getChargingPole();
 
-      setChargingAmount2(amount);
-
       if (amount > 0 && pole && owner) {
+        setChargingAmount2(amount);
         console.log('checkPayment', {
           amount,
           wallet,
@@ -238,7 +237,7 @@ export default function CarPage() {
           </Grid>
         </Grid>
         <Dialog open={open} TransitionComponent={Transition} keepMounted fullWidth maxWidth="sm" onClose={handleClose}>
-          <DialogTitle id="alert-dialog-slide-title">Bill</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title">Charging Bill</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               <p>电量: {chargingAmount / 0.5} 度</p>
@@ -248,7 +247,7 @@ export default function CarPage() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
-              Confirm
+              CONFIRM
             </Button>
           </DialogActions>
         </Dialog>

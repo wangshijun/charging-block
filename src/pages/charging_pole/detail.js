@@ -26,20 +26,21 @@ export default function PoleDetail({ query }) {
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isFinishChargeOpen, setFinishChargeOpen] = useState(false);
   const [status, setStatus] = useState(STATUS_IDLE);
-  const [statusDesc, setStatusDesc] = useState('等待充电');
+  const [statusDesc, setStatusDesc] = useState('Plugin your car...');
   const [tokens, setTokens] = useState(0);
   const [showTokens, setShowTokens] = useState(0);
 
   useInterval(
     async () => {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
+      console.log('check charging status', res);
       if (res.data && res.data.status) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
-          setStatusDesc('等待充电');
+          setStatusDesc('Plugin your car...');
         } else if (res.data.status === STATUS_CHARGING) {
           setFinishChargeOpen(false);
-          setStatusDesc('正在充电');
+          setStatusDesc('Charging...');
         }
       }
     },
@@ -54,13 +55,13 @@ export default function PoleDetail({ query }) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
           setChargingAmount(tokens);
-          setStatusDesc('等待充电...');
+          setStatusDesc('Plug your car...');
           setShowTokens(tokens);
           setTokens(0);
           setFinishChargeOpen(true);
         } else if (res.data.status === STATUS_CHARGING) {
           setFinishChargeOpen(false);
-          setStatusDesc('正在充电...');
+          setStatusDesc('Charging...');
         }
       }
     },
@@ -179,12 +180,12 @@ export default function PoleDetail({ query }) {
                 disableBackdropClick
                 disableEscapeKeyDown
                 onClose={() => setFinishChargeOpen(false)}>
-                <DialogTitle id="alert-dialog-slide-title">Bill</DialogTitle>
+                <DialogTitle id="alert-dialog-slide-title">Charging Bill</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-slide-description">
                     <Typography component="p">充电金额: {showTokens} CBT</Typography>
                     <Typography component="p">充电电量: {showTokens / state.value.price} 度</Typography>
-                    <Typography component="p">结束时间: {Date().toTimeString()}</Typography>
+                    <Typography component="p">结束时间: {new Date().toTimeString()}</Typography>
                     <Typography component="p">今日累计: 充电 {Math.round(Math.random() * 10) + 1} 次</Typography>
                   </DialogContentText>
                 </DialogContent>
