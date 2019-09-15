@@ -74,7 +74,7 @@ export default function Charging({ changePageCallBack }) {
       </div>
 
       <Button variant="contained" color="primary" className="finish-button" onClick={() => finishCharging()}>
-        充电结束
+        STOP
       </Button>
       <Dialog
         open={errorOpen}
@@ -141,10 +141,10 @@ const Main = styled.main`
   }
   .finish-button {
     margin-top: 40px;
-    height: 50px;
-    width: 160x;
-    border-radius: 8px;
-    font-size: 18px;
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    font-size: 24px;
     background: #6bc295;
     &:hover {
       background: #6f9379;
