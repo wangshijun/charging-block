@@ -68,7 +68,7 @@ ChargingMap.propTypes = {
 
 const Main = styled.main`
   width: 100%;
-  height: 100%;
+  height: 90vh;
   position: relative;
   .right-container-map {
     width: 100%;

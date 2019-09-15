@@ -192,6 +192,18 @@ export default function CarPage() {
                   Bind Owner Wallet
                 </Button>
               )}
+              {storage.wallet && (
+                <div className="did-container">
+                  <span className="did-title">Car Central ID:</span>
+                  <span className="did-content">{storage.wallet.address}</span>
+                </div>
+              )}
+              {storage.owner && (
+                <div className="did-container">
+                  <span className="did-title">Car Owner ID:</span>
+                  <span className="did-content">{storage.owner}</span>
+                </div>
+              )}
             </div>
           </Grid>
           <Grid className="right-container" item xs={12}>
@@ -259,16 +271,16 @@ const charging = keyframes`
 `;
 
 const Main = styled.main`
-  box-shadow: inset 0 0 100px hsla(0, 0%, 0%, 0.3);
   height: 100%;
-  padding: 10px;
+  padding: 9px;
   margin: 0;
-
   .container {
     width: 100%;
     flex-wrap: nowrap;
   }
   .left-container {
+    display: flex;
+    flex-direction: column;
     .car-status-container {
       height: 120px;
       display: flex;
@@ -341,23 +353,46 @@ const Main = styled.main`
     .car-image-container {
       height: 560px;
       display: flex;
+      flex: 1;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       .car-image {
         display: inline-block;
-        width: 280px;
+        width: 250px;
       }
     }
     .menus-container {
       border-top: solid 1px #ccc;
-      height: 120px;
+      height: 180px;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       .tokens {
         font-size: 30px;
         span {
           font-size: 40px;
+          font-weight: bold;
+        }
+      }
+      .did-container {
+        height: 40px;
+        width: 92%;
+        line-height: 40px;
+        color: #282828;
+        border-radius: 5px;
+        margin-top: 8px;
+        text-align: center;
+        box-shadow: 0 2px 12px 7px #ccc inset;
+        .did-title {
+          font-size: 14px;
+          color: #989898;
+          font-weight: bold;
+        }
+        .did-content {
+          margin-left: 4px;
+          font-size: 12px;
           font-weight: bold;
         }
       }
