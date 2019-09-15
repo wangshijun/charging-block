@@ -18,7 +18,7 @@ import Auth from '@arcblock/did-react/lib/Auth';
 import Layout from '../../components/pole';
 import api from '../../libs/api';
 
-let defaults = {
+const defaults = {
   name: '我的测试充电桩',
   description: '万向黑客马拉松专用充电桩',
   address: '上海市虹口区临平北路28号',
@@ -27,10 +27,6 @@ let defaults = {
   power: 40,
   price: 0.5,
 };
-
-if (process.env.NODE_ENV === 'production') {
-  defaults = {};
-}
 
 async function fetchMeta() {
   const [{ data: meta }, { data: session }] = await Promise.all([api.get('/api/meta'), api.get('/api/session')]);
@@ -49,6 +45,14 @@ export default function ChargingPoleInit() {
     register({ name: 'supplier' });
     register({ name: 'manufacturer' });
   }, [register]);
+
+  useEffect(() => {
+    if (state.value && state.value.locations) {
+      setValue('location', state.value.locations[0]._id);
+      setValue('supplier', state.value.suppliers[0]._id);
+      setValue('manufacturer', state.value.manufacturers[0]._id);
+    }
+  }, [state.value]);
 
   const onClaimChargingPileSuccess = () => {
     setTimeout(() => {
@@ -94,7 +98,7 @@ export default function ChargingPoleInit() {
   }
 
   const groups = {
-    'Basic Info': {
+    'Meta Info': {
       name: { type: 'text', label: '名字', required: true },
       description: { type: 'text', label: '描述', required: true },
       address: { type: 'text', label: '详细地址' },
@@ -104,7 +108,7 @@ export default function ChargingPoleInit() {
       price: { type: 'number', label: '功率（A）' },
       supportedCarModels: { type: 'text', label: '兼容的车型', multiple: true },
     },
-    Relationship: {
+    Partners: {
       location: { type: 'select', label: '场地', options: state.value.locations },
       supplier: { type: 'select', label: '电网', options: state.value.suppliers },
       manufacturer: { type: 'select', label: '生产商', options: state.value.manufacturers },
@@ -232,7 +236,7 @@ const Main = styled.div`
     margin-bottom: 32px;
 
     .input {
-      width: 36%;
+      width: 45%;
       margin-right: 4%;
     }
 
