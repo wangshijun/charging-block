@@ -13,7 +13,6 @@ export default function DemoHome() {
   }, []);
 
   const url = poleId ? `/charging_pole/detail?id=${poleId}` : '/charging_pole/initialize';
-  console.log(url);
 
   return (
     <Div>

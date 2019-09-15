@@ -14,7 +14,6 @@ export default function PoleLayout({ children, ...rest }) {
 }
 
 const Wrapper = styled(Container)`
-  height: 100vh;
   border: 16px solid #000000;
   border-top-width: 64px;
   box-sizing: border-box;

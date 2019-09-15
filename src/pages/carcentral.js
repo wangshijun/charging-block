@@ -59,6 +59,16 @@ const getFetcher = did => {
 /* eslint-disable-next-line react/prop-types */
 const OwnerBalance = ({ did }) => {
   const state = useAsync(getFetcher(did));
+  const [newBalance, setNewBalance] = useState(0);
+  useInterval(
+    async () => {
+      const balance = await getFetcher(did)();
+      if (balance) {
+        setNewBalance(balance);
+      }
+    },
+    state.value ? 1000 : null
+  );
 
   if (state.error) {
     return <p>{state.error.message}</p>;
@@ -68,7 +78,7 @@ const OwnerBalance = ({ did }) => {
     return <CircularProgress />;
   }
 
-  return <div className="tokens">{fromUnitToToken(state.value, 18)} CBT</div>;
+  return <div className="tokens">{fromUnitToToken(newBalance || state.value, 18)} CBT</div>;
 };
 
 export default function CarPage() {
