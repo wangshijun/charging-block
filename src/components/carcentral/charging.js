@@ -57,7 +57,7 @@ export default function Charging({ changePageCallBack }) {
         finishCharging();
       }
     },
-    currentValue >= 101 ? null : 500
+    currentValue >= 100 ? null : 500
   );
 
   return (
@@ -85,7 +85,7 @@ export default function Charging({ changePageCallBack }) {
         onClose={() => {
           setErrorOpen(false);
         }}>
-        <DialogTitle id="alert-dialog-slide-title">Notice</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Error</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">{errorMsg}</DialogContentText>
         </DialogContent>
@@ -95,7 +95,7 @@ export default function Charging({ changePageCallBack }) {
               setErrorOpen(false);
             }}
             color="primary">
-            确认
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>

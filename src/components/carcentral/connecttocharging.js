@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import PropTypes from 'prop-types';
 import api from '../../libs/api';
-import { setChargingPole, setChargingId } from '../../libs/storage';
+import { setChargingPole, setChargingId, getCarOwner } from '../../libs/storage';
 
 const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={ref} {...props} />);
 
@@ -21,6 +21,12 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
   const [errorOpen, setErrorOpen] = useState(false);
 
   const connectToPole = async () => {
+    const owner = getCarOwner();
+    if (!owner) {
+      setErrorMsg('Please Bind Owner Wallet!');
+      setErrorOpen(true);
+      return;
+    }
     try {
       const {
         data: { status, _id, error },
@@ -71,7 +77,7 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
         onClose={() => {
           setErrorOpen(false);
         }}>
-        <DialogTitle id="alert-dialog-slide-title">Notice</DialogTitle>
+        <DialogTitle id="alert-dialog-slide-title">Error</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">{errorMsg}</DialogContentText>
         </DialogContent>
@@ -81,7 +87,7 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
               setErrorOpen(false);
             }}
             color="primary">
-            确认
+            Confirm
           </Button>
         </DialogActions>
       </Dialog>
