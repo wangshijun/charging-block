@@ -123,6 +123,7 @@ const Main = styled.main`
         height: 50px;
         padding-left: 10px;
         border-top: solid 1px #eee;
+        cursor: pointer;
         .address {
           flex: 1;
           margin-right: 10px;
