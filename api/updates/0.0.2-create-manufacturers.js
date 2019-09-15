@@ -39,7 +39,7 @@ module.exports = done => {
         const manufacturer = new Manufacturer(info);
         await ForgeSDK.sendDeclareTx({
           tx: {
-            itx: { moniker: `c_${wallet.toAddress()}` },
+            itx: { moniker: `c_${wallet.toAddress()}`, data: { typeUrl: 'json', value: { role: 'manufacturer' } } },
           },
           wallet,
         });

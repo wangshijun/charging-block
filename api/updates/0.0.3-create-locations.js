@@ -25,7 +25,7 @@ module.exports = done => {
 
         await ForgeSDK.sendDeclareTx({
           tx: {
-            itx: { moniker: `c_${wallet.toAddress()}` },
+            itx: { moniker: `c_${wallet.toAddress()}`, data: { typeUrl: 'json', value: { role: 'location' } } },
           },
           wallet,
         });
