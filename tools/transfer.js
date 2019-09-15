@@ -1,7 +1,10 @@
+require('dotenv').config();
+
 const ForgeSDK = require('@arcblock/forge-sdk');
 const { ensureModeratorSecretKey } = require('./util');
+const env = require('../src/libs/env');
 
-ForgeSDK.connect('http://127.0.0.1:8210/api');
+ForgeSDK.connect({ endpoint: env.chainHost, chainId: env.chainId });
 
 (async () => {
   const sk = ensureModeratorSecretKey();
