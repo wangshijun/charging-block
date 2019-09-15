@@ -56,14 +56,13 @@ export default function PoleDetail({ query }) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
           setChargingAmount(tokens);
-          setStatusDesc('等待充电');
-          // show dialog
+          setStatusDesc('等待充电...');
           setShowTokens(tokens);
           setTokens(0);
           setFinishChargeOpen(true);
         } else if (res.data.status === STATUS_CHARGING) {
           setFinishChargeOpen(false);
-          setStatusDesc('正在充电');
+          setStatusDesc('正在充电...');
         }
       }
     },
@@ -113,6 +112,10 @@ export default function PoleDetail({ query }) {
         {state.value && (
           <React.Fragment>
             <div className="info-rows">
+              <Typography component="div" className="info-row info-row--full">
+                <span className="info-row__key">桩DID</span>
+                <span className="info-row__value">{state.value.did}</span>
+              </Typography>
               <Typography component="div" className="info-row info-row--full">
                 <span className="info-row__key">所在位置</span>
                 <span className="info-row__value">{state.value.address}</span>
