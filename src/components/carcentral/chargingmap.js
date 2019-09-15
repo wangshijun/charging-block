@@ -31,7 +31,7 @@ export default function ChargingMap({ changePageCallBack }) {
           amapkey="8e79dd6f45a17c1686437f20cb85a6c2">
           {chargingPoles.length > 0 &&
             chargingPoles.map(item => (
-              <Marker icon="" position={{ longitude: item.longitude, latitude: item.latitude }} />
+              <Marker key={`${item._id}`} icon="" position={{ longitude: item.longitude, latitude: item.latitude }} />
             ))}
         </Map>
       </div>

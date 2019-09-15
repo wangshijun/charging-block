@@ -86,7 +86,7 @@ export default function CarPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [binding, setBinding] = useState(false);
   const [batteryClass, setBatteryClass] = useState('battery charging-start');
-  const [batteryLevel, setBatteryLevel] = useState(0);
+  const [batteryLevel, setBatteryLevel] = useState(10);
   const [open, setOpen] = useState(false);
   const [poleDid, setPoleDid] = useState('');
 
@@ -136,12 +136,11 @@ export default function CarPage() {
       setCarWallet(wallet);
       setStorage({ wallet, owner });
     }
-
     console.log(wallet);
     const res = await api.get(`/api/charging?carDid=${wallet.address}`);
     console.log(res);
-    if (res && res.data && res.data._id) {
-      setChargingId(res.data._id);
+    if (res && res.data && res.data.data && res.data.data._id && res.data.data.status === 'charging') {
+      setChargingId(res.data.data._id);
       setBatteryClass('battery charging');
       setCurrentPage(2);
     }
@@ -193,6 +192,9 @@ export default function CarPage() {
             </div>
             <div className="car-image-container">
               <img className="car-image" src="/static/images/car.png" alt="car" />
+              {currentPage === 2 && (
+                <img className="car-electricity" src="/static/images/electricity.png" alt="electronic" />
+              )}
             </div>
             <div className="menus-container">
               {storage.owner ? (
@@ -204,13 +206,13 @@ export default function CarPage() {
               )}
               {storage.wallet && (
                 <div className="did-container">
-                  <span className="did-title">Car Central ID:</span>
+                  <span className="did-title">Car ID:</span>
                   <span className="did-content">{storage.wallet.address}</span>
                 </div>
               )}
               {storage.owner && (
                 <div className="did-container">
-                  <span className="did-title">Car Owner ID:</span>
+                  <span className="did-title">Owner ID:</span>
                   <span className="did-content">{storage.owner}</span>
                 </div>
               )}
@@ -280,6 +282,15 @@ const charging = keyframes`
     }
 `;
 
+const chargingForIcon = keyframes`
+    from {
+      opacity: 0.3;
+    }
+    to {
+      opacity: 1;
+    }
+`;
+
 const Main = styled.main`
   height: 100%;
   padding: 9px;
@@ -332,6 +343,7 @@ const Main = styled.main`
             height: 25px;
             position: absolute;
             border-radius: 2px;
+            box-shadow: 2px 0 5px 2px #eee;
             z-index: 2000;
           }
           &:after {
@@ -344,7 +356,7 @@ const Main = styled.main`
             position: absolute;
             border-radius: 2px;
             box-shadow: 2px 0 5px 2px #eee;
-            z-index: 0;
+            z-index: 2000;
           }
         }
         .charging {
@@ -367,9 +379,17 @@ const Main = styled.main`
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
       .car-image {
         display: inline-block;
         width: 250px;
+      }
+      .car-electricity {
+        position: absolute;
+        bottom: 150px;
+        right: 60px;
+        width: 32px;
+        animation: ${chargingForIcon} 2s ease-in-out infinite;
       }
     }
     .menus-container {
@@ -381,10 +401,7 @@ const Main = styled.main`
       align-items: center;
       .tokens {
         font-size: 30px;
-        span {
-          font-size: 40px;
-          font-weight: bold;
-        }
+        font-weight: bold;
       }
       .did-container {
         height: 40px;
@@ -394,13 +411,25 @@ const Main = styled.main`
         border-radius: 5px;
         margin-top: 8px;
         text-align: center;
+        display: flex;
+        padding-left: 10px;
         box-shadow: 0 2px 12px 7px #ccc inset;
+        overflow: hidden;
         .did-title {
+          width: 70px;
           font-size: 14px;
           color: #989898;
           font-weight: bold;
+          text-align: justify;
+          text-justify: inter-ideograph;
+          &:after {
+            content: ' ';
+            display: inline-block;
+            width: 100%;
+          }
         }
         .did-content {
+          flex: 1;
           margin-left: 4px;
           font-size: 12px;
           font-weight: bold;
