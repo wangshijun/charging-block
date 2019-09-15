@@ -17,6 +17,7 @@ import Auth from '@arcblock/did-react/lib/Auth';
 
 import Layout from '../../components/pole';
 import api from '../../libs/api';
+import { setChargingPoleId } from '../../libs/storage';
 
 const defaults = {
   name: '我的测试充电桩',
@@ -56,6 +57,7 @@ export default function ChargingPoleInit() {
 
   const onClaimChargingPileSuccess = () => {
     setTimeout(() => {
+      setChargingPoleId(created._id);
       window.location.href = `/charging_pole/detail?id=${created._id}`;
     });
   };

@@ -54,3 +54,11 @@ export function getChargingId() {
 export function setChargingId(value) {
   return set('charging_id', value);
 }
+
+export function getChargingPoleId() {
+  return get('charging_pole_id');
+}
+
+export function setChargingPoleId(value) {
+  return set('charging_pole_id', value);
+}

@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { getChargingPoleId } from '../libs/storage';
 
 export default function DemoHome() {
+  const [poleId, setPoleId] = useState('');
+
+  useEffect(() => {
+    const id = getChargingPoleId();
+    if (id) {
+      setPoleId(id);
+    }
+  }, []);
+
+  const url = poleId ? `/charging_pole/detail?id=${poleId}` : '/charging_pole/initialize';
+  console.log(url);
+
   return (
     <Div>
       <iframe title="car" className="iframe iframe-car" src="/carcentral" />
-      <iframe title="pole" className="iframe iframe-pole" src="/charging_pole/initialize" />
+      <iframe title="pole" className="iframe iframe-pole" src={url} />
     </Div>
   );
 }

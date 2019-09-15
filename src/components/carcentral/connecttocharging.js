@@ -22,14 +22,16 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
 
   const connectToPole = async () => {
     try {
-      const res = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
-      console.log(res);
-      if (res && res.data && res.data._id) {
+      const {
+        data: { status, data, error },
+      } = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
+      if (status === 200 && data.status === 'charging') {
         setChargingPole(poleDid);
-        setChargingId(res.data._id);
+        // eslint-disable-next-line no-underscore-dangle
+        setChargingId(data._id);
         changePageCallBack(2, 50);
-      } else if (res.data.error) {
-        setErrorMsg(res.data.error);
+      } else if (error) {
+        setErrorMsg(error);
         setErrorOpen(true);
       }
     } catch (error) {

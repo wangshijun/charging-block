@@ -12,11 +12,8 @@ module.exports = {
           return res.json({ status: 400, error: 'carDid is required' });
         }
 
-        console.log('---');
-        console.log(carDid);
         const record = await ChargingRecord.findOne({ carDid });
-        console.log(record);
-        return res.json(record);
+        return res.json({ status: 200, data: record });
       } catch (err) {
         return res.json({ status: 500, error: 'get charging record failed' });
       }
