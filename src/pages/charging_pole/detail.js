@@ -33,7 +33,6 @@ export default function PoleDetail({ query }) {
   useInterval(
     async () => {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
-      console.log(res);
       if (res.data && res.data.status) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
@@ -51,7 +50,6 @@ export default function PoleDetail({ query }) {
     async () => {
       setTokens(tokens + 1);
       const res = await api.get(`/api/chargingPoles/${query.id}`);
-      console.log(res);
       if (res.data && res.data.status) {
         setStatus(res.data.status);
         if (res.data.status === STATUS_IDLE) {
@@ -72,7 +70,6 @@ export default function PoleDetail({ query }) {
   const state = useAsync(async () => {
     try {
       const res = await api.get(`/api/chargingPoles/${query.id}`);
-      console.log(res);
       if (res.status === 200) {
         return res.data;
       }
@@ -181,9 +178,10 @@ export default function PoleDetail({ query }) {
                 <DialogTitle id="alert-dialog-slide-title">充电账单</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-slide-description">
-                    <p>充电金额: {showTokens} CBT</p>
-                    <p>充电电量: {showTokens / state.value.price} 度</p>
-                    <p>结束时间: {Date()}</p>
+                    <Typography component="p">充电金额: {showTokens} CBT</Typography>
+                    <Typography component="p">充电电量: {showTokens / state.value.price} 度</Typography>
+                    <Typography component="p">结束时间: {Date()}</Typography>
+                    <Typography component="p">今日累计: 充电 {Math.round(Math.random() * 10) + 1} 次</Typography>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
