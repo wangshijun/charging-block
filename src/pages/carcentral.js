@@ -109,6 +109,9 @@ export default function CarPage() {
       const wallet = getCarWallet();
       const owner = getCarOwner();
       const pole = getChargingPole();
+
+      setChargingAmount2(amount);
+
       if (amount > 0 && pole && owner) {
         console.log('checkPayment', {
           amount,
@@ -116,7 +119,6 @@ export default function CarPage() {
           owner,
           pole,
         });
-        setChargingAmount2(amount);
 
         // eslint-disable-next-line object-curly-newline
         const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid: pole });
