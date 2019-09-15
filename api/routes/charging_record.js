@@ -47,7 +47,7 @@ module.exports = {
         }
 
         await record.update({ status: 'finished', disconnectedAt: new Date() });
-        await ChargingPole.update({}, { $set: { status: 'idle' } }, { multi: true });
+        await ChargingPole.update({ did: record.did }, { $set: { status: 'idle' } });
         const result = await ChargingRecord.findById(record._id); // eslint-disable-line
         return res.json(result);
       } catch (error) {
@@ -87,7 +87,7 @@ module.exports = {
         });
 
         await record.save();
-        await ChargingPole.update({}, { $set: { status: 'charging' } }, { multi: true });
+        await ChargingPole.update({ did: record.did }, { $set: { status: 'charging' } });
 
         return res.json(record);
       } catch (err) {
