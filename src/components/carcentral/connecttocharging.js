@@ -23,12 +23,14 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
   const connectToPole = async () => {
     try {
       const {
-        data: { status, data, error },
+        data: { status, _id, error },
       } = await api.post('/api/charging', { carDid, chargingPoleDid: poleDid });
-      if (status === 200 && data.status === 'charging') {
+      console.log('******');
+      console.log({ status, _id, error });
+      if (status === 'charging') {
         setChargingPole(poleDid);
         // eslint-disable-next-line no-underscore-dangle
-        setChargingId(data._id);
+        setChargingId(_id);
         changePageCallBack(2, 50);
       } else if (error) {
         setErrorMsg(error);
@@ -57,7 +59,7 @@ export default function ConnectToCharging({ changePageCallBack, goFirstPage, pol
         <div className="pulse" />
         <div className="pulse1" />
         <Button variant="contained" color="primary" className="connect-button dot" onClick={() => connectToPole()}>
-          自动连接
+          AUTO CONNECT
         </Button>
       </div>
       <Dialog
@@ -150,7 +152,7 @@ const warn1 = keyframes`
 
 const Main = styled.main`
   width: 100%;
-  height: 100%;
+  height: 90vh;
   position: relative;
   display: flex;
   flex-direction: column;

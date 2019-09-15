@@ -12,7 +12,7 @@ module.exports = {
           return res.json({ status: 400, error: 'carDid is required' });
         }
 
-        const record = await ChargingRecord.findOne({ carDid });
+        const record = await ChargingRecord.findOne({ carDid, status: 'charging' });
         return res.json({ status: 200, data: record });
       } catch (err) {
         return res.json({ status: 500, error: 'get charging record failed' });
