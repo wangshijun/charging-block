@@ -110,11 +110,15 @@ export default function PoleDetail({ query }) {
           <React.Fragment>
             <div className="info-rows">
               <Typography component="div" className="info-row info-row--full">
-                <span className="info-row__key">桩DID</span>
+                <span className="info-row__key">ID</span>
                 <span className="info-row__value">{state.value.did}</span>
               </Typography>
               <Typography component="div" className="info-row info-row--full">
-                <span className="info-row__key">所在位置</span>
+                <span className="info-row__key">名称</span>
+                <span className="info-row__value">{state.value.name}</span>
+              </Typography>
+              <Typography component="div" className="info-row info-row--full">
+                <span className="info-row__key">位置</span>
                 <span className="info-row__value">{state.value.address}</span>
               </Typography>
               <Typography component="div" className="info-row">

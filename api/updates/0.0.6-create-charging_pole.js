@@ -1,5 +1,7 @@
 /* eslint no-console:"off" */
 const keystone = require('keystone');
+const { fromRandom } = require('@arcblock/forge-wallet');
+const ForgeSDK = require('@arcblock/forge-sdk');
 const { poles } = require('./data');
 
 const ChargingPole = keystone.list('ChargingPole').model;
@@ -20,11 +22,13 @@ const random = (lists = []) => {
 module.exports = done => {
   // 4. insert source into target
   Promise.all([CarModel.find().select('model'), Manufacturer.find(), Supplier.find(), Location.find()]).then(
-    ([carModels, manufacturers, suppliers, locations]) => {
+    async ([carModels, manufacturers, suppliers, locations]) => {
       const models = carModels.map(x => x.model);
+      const owner = fromRandom();
+
       const tasks = poles.map(
         info =>
-          new Promise(resolve => {
+          new Promise(async resolve => {
             info.description = info.address;
             info.price = (1.2 + Math.random()).toFixed(2);
             info.power = parseInt(90 + 50 * Math.random(), 10);
@@ -37,14 +41,31 @@ module.exports = done => {
 
             const chargingPole = new ChargingPole(info);
 
-            chargingPole.save(err => {
-              (err ? console.error : console.log)(
-                `insert ChargingPole ${err ? 'failed' : 'success'}`,
-                JSON.stringify({ info, err })
-              );
+            await chargingPole.save();
 
-              resolve(chargingPole);
-            });
+            const cpid = chargingPole._id; //eslint-disable-line
+            const asset = {
+              moniker: `charging_pole_${cpid}`,
+              readonly: true,
+              transferrable: true,
+              issuer: owner.toAddress(),
+              parent: '',
+              data: {
+                typeUrl: 'json',
+                value: {
+                  model: 'ChargingPole',
+                  cpid,
+                  owner: owner.toAddress(),
+                },
+              },
+            };
+            asset.address = ForgeSDK.Util.toAssetAddress(asset, owner.toAddress());
+            chargingPole.did = asset.address;
+            chargingPole.operator = owner.toAddress();
+            await chargingPole.save();
+
+            console.log('insert ChargingPole success', JSON.stringify(info));
+            resolve();
           })
       );
 

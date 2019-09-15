@@ -89,6 +89,7 @@ export default function CarPage() {
   const [batteryLevel, setBatteryLevel] = useState(10);
   const [open, setOpen] = useState(false);
   const [poleDid, setPoleDid] = useState('');
+  const [chargingAmount, setChargingAmount2] = useState(0);
 
   const generateWallet = async () => {
     const wallet = fromRandom();
@@ -108,6 +109,9 @@ export default function CarPage() {
       const wallet = getCarWallet();
       const owner = getCarOwner();
       const pole = getChargingPole();
+
+      setChargingAmount2(amount);
+
       if (amount > 0 && pole && owner) {
         console.log('checkPayment', {
           amount,
@@ -115,10 +119,10 @@ export default function CarPage() {
           owner,
           pole,
         });
+
         // eslint-disable-next-line object-curly-newline
         const res = await api.post('/api/transaction', { wallet, amount, owner, poleDid: pole });
         if (res.data.status === 200) {
-          console.log(res);
           setChargingAmount(0);
         }
       }
@@ -234,13 +238,12 @@ export default function CarPage() {
           </Grid>
         </Grid>
         <Dialog open={open} TransitionComponent={Transition} keepMounted fullWidth maxWidth="sm" onClose={handleClose}>
-          <DialogTitle id="alert-dialog-slide-title">充电账单</DialogTitle>
+          <DialogTitle id="alert-dialog-slide-title">Charging Complete</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              <p>Hash: xxxxxxx</p>
-              <p>time: xxxxxxx</p>
-              <p>token spend: xxxxxxx</p>
-              <p>charging got: xxxxxxx</p>
+              <p>电量: {chargingAmount / 0.5} 度</p>
+              <p>时间: 1 H</p>
+              <p>费用: {chargingAmount} CBT</p>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
